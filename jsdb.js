@@ -1,34 +1,6 @@
-/*
-Test in postgres:
-CREATE TABLE employee ( id integer PRIMARY KEY, name varchar(40), department_id integer);
-CREATE TABLE department (id integer PRIMARY KEY, name varchar(40));
-INSERT INTO employee VALUES (1,'Josh', 1), (2,'Jane', 2), (3,'Ruth', 3), (4,'Elliot',1),(5,'Michael',null), (6,'Garth',null);
-INSERT INTO department VALUES (1,'Sales'),(2,'Engineering'),(3,'Management'),(4,'Consultants');
-*/
+// Joshua Weinberg 2020
 
-const employee = {
-  name: "employee",
-  rows: [
-    { id: 1, name: "Josh", department_id: 1 },
-    { id: 2, name: "Jane", department_id: 2 },
-    { id: 3, name: "Ruth", department_id: 3 },
-    { id: 4, name: "Elliot", department_id: 1 },
-    { id: 5, name: "Michael", department_id: null },
-    { id: 6, name: "Garth", department_id: null },
-  ],
-};
-
-const department = {
-  name: "department",
-  rows: [
-    { id: 1, name: "Sales" },
-    { id: 2, name: "Engineering" },
-    { id: 3, name: "Management" },
-    { id: 4, name: "Consultants" },
-  ],
-};
-
-// cross product
+// cross takes two tables and returns a table which includes a cross join of all rows
 const cross = (a, b) => {
   const results = [];
   for (const x of a.rows) {
@@ -45,10 +17,6 @@ const cross = (a, b) => {
     }
   }
   return results;
-};
-
-const innerJoin = (a, b, pred) => {
-  return cross(a, b).filter(pred);
 };
 
 // return true if all key/values of a are in b
@@ -73,7 +41,17 @@ const getResultRow = (name, a) => {
   return row;
 };
 
-const leftOuterJoin = (a, b, pred) => {
+/**
+ * innerJoin takes two tables and a predicate. Result will be a table which includes the cross join of all rows which satisfy the predicate and have no null elements.
+ */
+const innerJoin = (a, b, pred) => {
+  return cross(a, b).filter(pred);
+};
+
+/**
+ * leftJoin takes two tables and a predicate. Result will be a table which includes the cross join of all rows which satisfy the predicate and which has no nulls in table a.
+ */
+const leftJoin = (a, b, pred) => {
   const cp = cross(a, b);
   let results = [];
   for (i of a.rows) {
@@ -90,10 +68,22 @@ const leftOuterJoin = (a, b, pred) => {
   return results;
 };
 
-const rightOuterJoin = (a, b, pred) => {
-  return leftOuterJoin(b, a, pred);
+/**
+ * rightJoin takes two tables and a predicate. Result will be a table which includes the cross join of all rows which satisfy the predicate and which has no nulls in table b.
+ */
+const rightJoin = (a, b, pred) => {
+  return leftJoin(b, a, pred);
 };
 
+/*
+To test these queries in postgres:
+CREATE TABLE employee ( id integer PRIMARY KEY, name varchar(40), department_id integer);
+CREATE TABLE department (id integer PRIMARY KEY, name varchar(40));
+INSERT INTO employee VALUES (1,'Josh', 1), (2,'Jane', 2), (3,'Ruth', 3), (4,'Elliot',1),(5,'Michael',null), (6,'Garth',null);
+INSERT INTO department VALUES (1,'Sales'),(2,'Engineering'),(3,'Management'),(4,'Consultants');
+*/
+
+// Helper output function
 const csv = (a) => {
   a.forEach((i) => delete i["_tableRows"]);
   console.log(Object.keys(a[0]).join(","));
@@ -103,6 +93,32 @@ const csv = (a) => {
     }
   }
 };
+
+// Tables
+
+const employee = {
+  name: "employee",
+  rows: [
+    { id: 1, name: "Josh", department_id: 1 },
+    { id: 2, name: "Jane", department_id: 2 },
+    { id: 3, name: "Ruth", department_id: 3 },
+    { id: 4, name: "Elliot", department_id: 1 },
+    { id: 5, name: "Michael", department_id: null },
+    { id: 6, name: "Garth", department_id: null },
+  ],
+};
+
+const department = {
+  name: "department",
+  rows: [
+    { id: 1, name: "Sales" },
+    { id: 2, name: "Engineering" },
+    { id: 3, name: "Management" },
+    { id: 4, name: "Consultants" },
+  ],
+};
+
+// Demo
 
 console.log("\n-- Inner join employee, department on department id");
 console.log(
@@ -119,7 +135,7 @@ console.log("\n-- Left join employee, department on department id --");
 console.log(
   "-- Equivalent SQL: SELECT * FROM employee LEFT JOIN department ON employee.department_id = department.id;"
 );
-const lo = leftOuterJoin(
+const lo = leftJoin(
   employee,
   department,
   (c) => c["employee.department_id"] === c["department.id"]
@@ -130,7 +146,7 @@ console.log("\n-- Right outer join on department id --");
 console.log(
   "-- Equivalent SQL: SELECT * FROM employee RIGHT JOIN department ON employee.department_id = department.id;"
 );
-const ro = rightOuterJoin(
+const ro = rightJoin(
   employee,
   department,
   (c) => c["employee.department_id"] === c["department.id"]
