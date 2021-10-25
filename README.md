@@ -1,6 +1,6 @@
 # jsdb
 
-A very simple in-memory relational database to demonstrate how JOINs work in SQL.
+SQL operations written in Javascript to demonstrate how JOINs work in SQL.
 
 # What is a Join?
 
