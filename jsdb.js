@@ -234,7 +234,7 @@ csv(join2);
 // 2 - WHERE - where is run after a FROM/JOIN to reduce the output set
 
 /**
- * Where takes a table and a predicate and reduces rows to the ones which match the predicate
+ * WHERE takes a table and a predicate and reduces rows to the ones which match the predicate
  */
 const WHERE = (table, pred) => {
   return {
@@ -281,3 +281,120 @@ const result = WHERE(join2, (row) => {
 });
 csv(result);
 */
+
+/**
+ * GROUP_BY creates an array for each column in the input table (which can be the result of a JOIN, WHERE)
+ * and populates that array with the values for that column from rows where the group by key is the same.
+ */
+/*
+   select department_id, array_agg(salary) from employees group by department_id
+
+   need to make table like:
+
+   {
+    name: employees
+    rows: [
+      { department_id: null,
+        _groupedValues: {
+          salary: [ 120000, 200000 ],
+          name: ['Michael', 'Garth' ],
+          id: [5,6],
+          department_id: [None, None],
+        }
+      },
+      { department_id: 3,
+        _groupedValues: {
+          salary: [ 200000 ],
+          name: ['Ruth' ],
+          id: [3],
+          department_id: [3],
+        }
+      },
+      { department_id: 1,
+        _groupedValues: {
+          salary: [ 150000, 180000 ],
+          name: ['Josh', 'Elliot'],
+          id: [1,4],
+          department_id: [1,1],
+        }
+      }
+    ]
+   }
+ */
+const GROUP_BY = (table, groupBy) => {
+  const result = {
+    name: table.name,
+    rows: []
+  }
+  _colValuesByGroupBy = {}
+  for (const row of table.rows) {
+    if (!_colValuesByGroupBy[row[groupBy]]) {
+      _colValuesByGroupBy[row[groupBy]] = {};
+    }
+    for (const col of Object.keys(row)) {
+      if (!_colValuesByGroupBy[row[groupBy]][col]) {
+        _colValuesByGroupBy[row[groupBy]][col] = [];
+      }
+      _colValuesByGroupBy[row[groupBy]][col].push(row[col])
+    }
+  }
+
+  const resultRows = [];
+  for (const kv of Object.keys(_colValuesByGroupBy)) {
+    const r = {
+      [groupBy]: kv,
+      _groupedValues: _colValuesByGroupBy[kv]
+    }
+    resultRows.push(r);
+  }
+
+  return {
+    name: table.name,
+    rows: resultRows
+  }
+}
+
+// AGGREGATE FUNCTIONS
+
+// ARRAY_AGG returns the list of grouped items in the row for the given column
+const ARRAY_AGG = (row, column) => {
+  return row._groupedValues[column];
+}
+
+// AVG returns the average of the grouped items in the row for the given column
+const AVG = (row, column) => {
+  const total = row._groupedValues[column].reduce((p,c) => p + c, 0);
+  return total/row._groupedValues[column].length;
+}
+
+console.log('SELECT department_id, array_agg(salary) FROM employee GROUP BY department_id');
+
+const result = GROUP_BY(employee, 'department_id');
+for (const row of result.rows) {
+  const salaries = ARRAY_AGG(row, 'salary');
+  console.log(`${row.department_id},${JSON.stringify(salaries)}`);
+}
+
+console.log('SELECT department_id, avg(salary) FROM employee GROUP BY department_id');
+
+const avgs = GROUP_BY(employee, 'department_id');
+for (const row of avgs.rows) {
+  const avg = AVG(row, 'salary');
+  console.log(`${row.department_id},${avg}`);
+}
+
+debugger;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
