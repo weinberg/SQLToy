@@ -104,11 +104,19 @@ INSERT INTO employee_charity_group VALUES (1,1),(1,4),(2,1),(3,4),(3,5),(4,1),(4
 // Helper output function
 const csv = (a) => {
   a.rows.forEach((i) => delete i["_tableRows"]);
-  console.log(Object.keys(a.rows[0]).join(","));
+  a.rows.forEach((i) => delete i["_groupedValues"]);
+  console.log(Object.keys(a.rows[0]).join(','));
   for (i of a.rows) {
-    if (i !== "_tableRows") {
-      console.log(Object.values(i).join(","));
+    debugger;
+    const outputValues = [];
+    for (value of Object.values(i)) {
+      if (Array.isArray(value)) {
+        outputValues.push(`"[${value.join(',')}]"`)
+      } else {
+        outputValues.push(value);
+      }
     }
+    console.log(outputValues.join(','));
   }
 };
 
@@ -356,34 +364,88 @@ const GROUP_BY = (table, groupBy) => {
 
 // AGGREGATE FUNCTIONS
 
-// ARRAY_AGG returns the list of grouped items in the row for the given column
-const ARRAY_AGG = (row, column) => {
-  return row._groupedValues[column];
+const aggregateHelper = (table, column, aggName, aggFunc) => {
+  for (const row of table.rows) {
+    row[`${aggName}(${column})`] = aggFunc(row._groupedValues[column]);
+  }
+  return table;
 }
 
-// AVG returns the average of the grouped items in the row for the given column
-const AVG = (row, column) => {
-  const total = row._groupedValues[column].reduce((p,c) => p + c, 0);
-  return total/row._groupedValues[column].length;
+// ARRAY_AGG returns a table with a new aggregate column for the given grouped column
+// which just contains the list of the grouped values
+const ARRAY_AGG = (table, column) => {
+  return aggregateHelper(table, column, 'ARRAY_AGG', values => values);
 }
 
-console.log('SELECT department_id, array_agg(salary) FROM employee GROUP BY department_id');
-
-const result = GROUP_BY(employee, 'department_id');
-for (const row of result.rows) {
-  const salaries = ARRAY_AGG(row, 'salary');
-  console.log(`${row.department_id},${JSON.stringify(salaries)}`);
+// AVG returns a table with a new aggregate column for the given grouped column
+// which contains the average of the grouped values
+const AVG = (table, column) => {
+  return aggregateHelper(table, column, 'AVG', values => {
+    const total = values.reduce((p,c) => p + c, 0);
+    return total/values.length;
+  });
 }
 
-console.log('SELECT department_id, avg(salary) FROM employee GROUP BY department_id');
-
-const avgs = GROUP_BY(employee, 'department_id');
-for (const row of avgs.rows) {
-  const avg = AVG(row, 'salary');
-  console.log(`${row.department_id},${avg}`);
+// MAX aggregate function
+const MAX = (table, column) => {
+  const getMax = (a, b) => Math.max(a, b);
+  return aggregateHelper(table, column, 'MAX', values => values.reduce(getMax));
 }
 
+// MIN aggregate function
+const MIN = (table, column) => {
+  const getMin = (a, b) => Math.min(a, b);
+  return aggregateHelper(table, column, 'MIN', values => values.reduce(getMin));
+}
+
+// COUNT aggregate function
+const COUNT = (table, column) => {
+  return aggregateHelper(table, column, 'COUNT', values => values.length);
+}
+
+//console.log('SELECT department_id, array_agg(salary) FROM employee GROUP BY department_id');
+
+/*
+let group = GROUP_BY(employee, 'department_id');
+const agg = ARRAY_AGG(group, 'salary');
 debugger;
+csv(agg)
+*/
+
+// console.log('SELECT department_id, avg(salary) FROM employee GROUP BY department_id');
+/*
+group = GROUP_BY(employee, 'department_id');
+const avgs = AVG(group, 'salary');
+csv(avgs)
+*/
+
+// Two aggregate columns:
+// console.log('SELECT department_id, avg(salary), array_agg(salary) FROM employee GROUP BY department_id');
+let result = GROUP_BY(employee, 'department_id');
+result = ARRAY_AGG(result, 'salary');
+result = AVG(result, 'salary');
+result = MAX(result, 'salary');
+result = MIN(result, 'salary');
+result = COUNT(result, 'salary');
+csv(result)
+
+/*
+result:
+   department_id | ARRAY_AGG(salary) | AVG(salary) | MAX(salary) | MIN(salary) | COUNT(salary) ║
+   1             | [150000,180000]   | 165000      | 180000      | 150000      | 2             ║
+   2             | [160000]          | 160000      | 160000      | 160000      | 1             ║
+   3             | [200000]          | 200000      | 200000      | 200000      | 1             ║
+   null          | [120000,200000]   | 160000      | 200000      | 120000      | 2             ║
+*/
+
+
+
+
+
+
+
+
+
 
 
 
