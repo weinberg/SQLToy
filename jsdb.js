@@ -1,7 +1,7 @@
 // Joshua Weinberg 2020
 
 // cross takes two tables and returns a table which includes a cross join of all rows
-const cross = (a, b) => {
+const CROSS_JOIN = (a, b) => {
   const result = {
     name: '',
     rows: []
@@ -49,10 +49,10 @@ const getResultRow = (name, a) => {
 /**
  * innerJoin takes two tables and a predicate. Result will be a table which includes the cross join of all rows which satisfy the predicate and have no null elements.
  */
-const innerJoin = (a, b, pred) => {
+const INNER_JOIN = (a, b, pred) => {
   const result = {
     name: '',
-    rows: cross(a, b).rows.filter(pred),
+    rows: CROSS_JOIN(a, b).rows.filter(pred),
   }
 
   return result;
@@ -61,8 +61,8 @@ const innerJoin = (a, b, pred) => {
 /**
  * leftJoin takes two tables and a predicate. Result will be a table which includes the cross join of all rows which satisfy the predicate and which has no nulls in table a.
  */
-const leftJoin = (a, b, pred) => {
-  const cp = cross(a, b);
+const LEFT_JOIN = (a, b, pred) => {
+  const cp = CROSS_JOIN(a, b);
   let result = {
     name: '',
   }
@@ -85,8 +85,8 @@ const leftJoin = (a, b, pred) => {
 /**
  * rightJoin takes two tables and a predicate. Result will be a table which includes the cross join of all rows which satisfy the predicate and which has no nulls in table b.
  */
-const rightJoin = (a, b, pred) => {
-  return leftJoin(b, a, pred);
+const RIGHT_JOIN = (a, b, pred) => {
+  return LEFT_JOIN(b, a, pred);
 };
 
 /*
@@ -172,14 +172,14 @@ const employee_charity_group = {
 
 // Demo
 
-// FROM / JOIN - Comes first in SQL operation order
+// 1 - FROM / JOIN - Comes first in SQL operation order
 
 /*
 console.log("\n-- Inner join employee, department on department id");
 console.log(
   "-- Equivalent SQL: SELECT * FROM employee JOIN department ON employee.department_id = department.id;"
 );
-const employeeDept = innerJoin(
+const employeeDept = INNER_JOIN(
   employee,
   department,
   (c) => c["employee.department_id"] === c["department.id"]
@@ -190,7 +190,7 @@ console.log("\n-- Left join employee, department on department id --");
 console.log(
   "-- Equivalent SQL: SELECT * FROM employee LEFT JOIN department ON employee.department_id = department.id;"
 );
-const lo = leftJoin(
+const lo = LEFT_JOIN(
   employee,
   department,
   (c) => c["employee.department_id"] === c["department.id"]
@@ -201,7 +201,7 @@ console.log("\n-- Right outer join on department id --");
 console.log(
   "-- Equivalent SQL: SELECT * FROM employee RIGHT JOIN department ON employee.department_id = department.id;"
 );
-const ro = rightJoin(
+const ro = RIGHT_JOIN(
   employee,
   department,
   (c) => c["employee.department_id"] === c["department.id"]
@@ -213,41 +213,71 @@ csv(ro);
 Join using the join table
 */
 
-//console.log("\n-- Many to many join employee to charity group");
-//console.log(
+/*
+console.log("\n-- Many to many join employee to charity group");
+console.log(
   "-- Equivalent SQL: SELECT * FROM employee JOIN employee_charity_group ON employee_charity_group.a = employee.id JOIN charity_group ON charity_group.id = employee_charity_group.b "
-//);
-const join1 = innerJoin(
+);
+const join1 = INNER_JOIN(
   employee,
   employee_charity_group,
   (c) => c["employee_charity_group.A"] === c["employee.id"]
 );
-debugger;
-const join2 = innerJoin(
+const join2 = INNER_JOIN(
   join1,
   charity_group,
   (c) => c["employee_charity_group.B"] === c["charity_group.id"]
 );
 csv(join2);
+*/
 
-// WHERE - where is run after a join (FROM) to reduce the output set
+// 2 - WHERE - where is run after a FROM/JOIN to reduce the output set
 
-/*
-const where = (rows, pred) => {
-  return rows.filter(pred)
+/**
+ * Where takes a table and a predicate and reduces rows to the ones which match the predicate
+ */
+const WHERE = (table, pred) => {
+  return {
+    name: table.name,
+    rows: table.rows.filter(pred)
+  };
 }
 
+// SELECT * FROM employee JOIN department ON department.id = employee.id WHERE salary > 150000
 // First do an inner join on employee and department
-const employeeDept = innerJoin(
+/*
+const employeeDept = INNER_JOIN(
   employee,
   department,
   (c) => c["employee.department_id"] === c["department.id"]
 );
 
-const result = where(employeeDept, (row) => {
+// then apply the WHERE clause
+const result = WHERE(employeeDept, (row) => {
   return row['employee.salary'] > 150000;
 });
-
 csv(result);
+ */
 
+// SELECT * FROM employee
+//  JOIN employee_charity_group ON employee_charity_group.a = employee.id
+//  JOIN charity_group ON charity_group.id = employee_charity_group.b
+//  WHERE salary > 150000 AND charity_group.name = 'Cat Lovers';
+// First do join via join table as above
+/*
+const join1 = INNER_JOIN(
+  employee,
+  employee_charity_group,
+  (c) => c["employee_charity_group.A"] === c["employee.id"]
+);
+const join2 = INNER_JOIN(
+  join1,
+  charity_group,
+  (c) => c["employee_charity_group.B"] === c["charity_group.id"]
+);
+// Then apply the WHERE clause
+const result = WHERE(join2, (row) => {
+  return row['employee.salary'] > 150000 && row['charity_group.name'] === 'Cat Lovers';
+});
+csv(result);
 */

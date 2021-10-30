@@ -67,7 +67,7 @@ Equivalent SQL: `SELECT * FROM employee JOIN department ON employee.department_i
 ##### Code:
 
 ```javascript
-innerJoin(employee, department,
+INNER_JOIN(employee, department,
   (c) => c["employee.department_id"] === c["department.id"]
 );
 ```
@@ -91,7 +91,7 @@ Equivalent SQL: `SELECT * FROM employee LEFT JOIN department ON employee.departm
 ##### Code:
 
 ```javascript
-leftJoin( employee, department,
+LEFT_JOIN(employee, department,
   (c) => c["employee.department_id"] === c["department.id"]
 );
 ```
@@ -117,7 +117,7 @@ Equivalent SQL: `SELECT * FROM employee RIGHT JOIN department ON employee.depart
 ##### Code:
 
 ```javascript
-rightJoin( employee, department,
+RIGHT_JOIN(employee, department,
   (c) => c["employee.department_id"] === c["department.id"]
 );
 ```
