@@ -459,8 +459,20 @@ result:
  * HAVING
  */
 
-// Having takes an aggregate function and a predicate
-// todo
+// Having takes a column and a predicate - this is just like where but should be run after group by
+const HAVING = (table, pred) => {
+  debugger;
+  return {
+    name: table.name,
+    rows: table.rows.filter(pred)
+  }
+}
+
+result = GROUP_BY(employee, ['department_id']);
+result = COUNT(result, 'department_id');
+result = HAVING(result, (row) => row['COUNT(department_id)'] > 2);
+table(result);
+process.exit();
 
 /**
  * WINDOW
