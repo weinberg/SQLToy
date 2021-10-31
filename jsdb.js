@@ -343,7 +343,7 @@ csv(result);
    }
  */
 const GROUP_BY = (table, groupBys) => {
-  _colValuesByGroupBy = {}
+  const _colValuesByGroupBy = {}
 
   for (const row of table.rows) {
     // make key out of all groupby values for this row separated by unit separator
@@ -527,7 +527,6 @@ const DISTINCT = (table, columns) => {
     }
   }
 
-  debugger;
   const newRows = [];
   for (key of Object.keys(_colValuesByDistinct)) {
     const newRow = {};
@@ -676,9 +675,11 @@ table(result);
 
 result = SELECT(employee, ['name', 'status', 'salary']);
 result = ORDER_BY(result, (a,b) => a.salary - b.salary);
+// page 1
 let off = OFFSET(result, 0);
 let page = LIMIT(off, 4);
 table(page);
+// page 2
 off = OFFSET(result, 4);
 page = LIMIT(off, 4);
 table(page);
