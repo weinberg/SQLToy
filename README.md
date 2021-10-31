@@ -4,7 +4,7 @@ SQL operations written in Javascript for educational purposes.
 
 ### Cool a new database! Is this a great database to use in production?
 
-Hell no. Don't use this for anything except learning about how SQL processes a query.
+No. Don't use this for anything except learning about how SQL processes a query.
 
 ### What operations are supported?
 
@@ -93,6 +93,38 @@ We don't have a parser or a planner so you have to provide the correct order our
 A join operation in a relational database is a cross-join of the joined tables with a filtering predicate applied to the
 result.
 
+What is a cross join? Well it's every possible combination of rows from the first table and rows from the second table.
+
+For example if your two tables look like:
+
+```
+people:
+id | name | department_id 
+-------------------------
+1  | Josh | 1
+2  | Ruth | 2
+
+department:
+id | name
+---------------
+1  | Sales
+2  | Marketing
+```
+
+Then the cross join of these two tables would look like:
+
+```
+people.id | people.name | people.department_id | department.id | department.name 
+--------------------------------------------------------------------------------
+1         | Josh        | 1                    | 1             | Sales           
+1         | Josh        | 1                    | 2             | Marketing       
+2         | Ruth        | 2                    | 1             | Sales           
+2         | Ruth        | 2                    | 2             | Marketing       
+```
+
+Note that since there is no predicate which filters the rows by some criteria it returns all possible combinations of rows.
+A cross join is the starting point for other joins which do have a predicate.
+
 For a good discussion of this see https://medium.com/basecs/set-theory-the-method-to-database-madness-5ec4b4f05d79 .
 
 # Usage
@@ -101,21 +133,22 @@ Operations supported:
 
 ## Cross Join
 
-`cross(a,b)`: cross takes two tables and returns a table which includes a cross join of all rows
+`CROSS_JOIN(a,b)`: cross takes two tables and returns a table which includes a cross join of all rows
 
 ## Inner Join
 
-`innerJoin(a,b)`: innerJoin takes two tables and a predicate. Result will be a table which includes the cross join of
-all rows which satisfy the predicate and have no null elements.
+`INNER_JOIN(a,b, pred)`: innerJoin takes two tables and a predicate. Result will be a table which includes the cross join of
+all rows which satisfy the predicate and have no null elements. The predicate has the signature `(a,b) => boolean` and should
+return true for all rows which should be in the resulting table.
 
 ## Left Join
 
-`leftJoin(a,b)`: leftJoin takes two tables and a predicate. Result will be a table which includes the cross join of all
+`LEFT_JOIN(a,b, pred)`: leftJoin takes two tables and a predicate. Result will be a table which includes the cross join of all
 rows which satisfy the predicate and which has no nulls in table a.
 
 ## Right Join
 
-`rightJoin(a,b)`: rightJoin takes two tables and a predicate. Result will be a table which includes the cross join of
+`RIGHT_JOIN(a,b, pred)`: rightJoin takes two tables and a predicate. Result will be a table which includes the cross join of
 all rows which satisfy the predicate and which has no nulls in table b.
 
 # Sample output
