@@ -1,0 +1,5 @@
+department_id,status,ARRAY_AGG(name),MAX(salary)
+1,inactive,"[Josh,Ruth]",200000
+2,active,"[Jane]",160000
+1,active,"[Elliot]",180000
+<null>,active,"[Michael,Garth]",200000

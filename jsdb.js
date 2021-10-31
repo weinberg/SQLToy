@@ -91,11 +91,11 @@ const RIGHT_JOIN = (a, b, pred) => {
 
 /*
 To test these queries in postgres:
-CREATE TABLE employee ( id integer PRIMARY KEY, name varchar(40), salary integer, department_id integer);
+CREATE TABLE employee ( id integer PRIMARY KEY, name varchar(40), salary integer, department_id integer, status varchar(40));
 CREATE TABLE department (id integer PRIMARY KEY, name varchar(40));
 CREATE TABLE charity_group (id integer PRIMARY KEY, name varchar(40));
 CREATE TABLE employee_charity_group (a integer references employee (id), b integer references charity_group (id));
-INSERT INTO employee VALUES (1,'Josh', 150000, 1), (2,'Jane', 160000, 2), (3,'Ruth', 200000, 3), (4,'Elliot',180000, 1),(5,'Michael',120000, null), (6,'Garth',200000, null);
+INSERT INTO employee VALUES (1,'Josh', 150000, 1, 'inactive'), (2,'Jane', 160000, 2, 'active'), (3,'Ruth', 200000, 1, 'inactive'), (4,'Elliot',180000, 1, 'active'),(5,'Michael',120000, null, 'active'), (6,'Garth',200000, null, 'active');
 INSERT INTO department VALUES (1,'Sales'),(2,'Engineering'),(3,'Management'),(4,'Consultants');
 INSERT INTO charity_group VALUES (1,'Cat Lovers'),(2,'House Builders'),(3,'Food for the Needy'),(4,'Environmentalists'),(5,'Education for Kids'),(6,'Hippie Music for Peace');
 INSERT INTO employee_charity_group VALUES (1,1),(1,4),(2,1),(3,4),(3,5),(4,1),(4,2),(4,3),(4,4);
@@ -110,7 +110,9 @@ const csv = (a) => {
     debugger;
     const outputValues = [];
     for (value of Object.values(i)) {
-      if (Array.isArray(value)) {
+      if (value === '') {
+        outputValues.push('<null>');
+      } else if (Array.isArray(value)) {
         outputValues.push(`"[${value.join(',')}]"`)
       } else {
         outputValues.push(value);
@@ -129,12 +131,12 @@ const csv = (a) => {
 const employee = {
   name: "employee",
   rows: [
-    {id: 1, name: "Josh", salary: 150000, department_id: 1},
-    {id: 2, name: "Jane", salary: 160000, department_id: 2},
-    {id: 3, name: "Ruth", salary: 200000, department_id: 3},
-    {id: 4, name: "Elliot", salary: 180000, department_id: 1},
-    {id: 5, name: "Michael", salary: 120000, department_id: null},
-    {id: 6, name: "Garth", salary: 200000, department_id: null},
+    {id: 1, name: "Josh", salary: 150000, department_id: 1, status: 'inactive',},
+    {id: 2, name: "Jane", salary: 160000, department_id: 2, status: 'active',},
+    {id: 3, name: "Ruth", salary: 200000, department_id: 1, status: 'inactive',},
+    {id: 4, name: "Elliot", salary: 180000, department_id: 1, status: 'active',},
+    {id: 5, name: "Michael", salary: 120000, department_id: null, status: 'active',},
+    {id: 6, name: "Garth", salary: 200000, department_id: null, status: 'active',},
   ],
 };
 
@@ -329,14 +331,13 @@ csv(result);
     ]
    }
  */
-const GROUP_BY = (table, groupBy) => {
-  const result = {
-    name: table.name,
-    rows: []
-  }
+const GROUP_BY = (table, groupBys) => {
+  const US = String.fromCharCode(0x1f); // unitSeparator
   _colValuesByGroupBy = {}
+
   for (const row of table.rows) {
-    const key = row[groupBy]
+    // make key out of all groupby values for this row separated by unit separator
+    let key = groupBys.map(groupBy => row[groupBy]).join(US);
     if (!_colValuesByGroupBy[key]) {
       _colValuesByGroupBy[key] = {};
     }
@@ -349,10 +350,13 @@ const GROUP_BY = (table, groupBy) => {
   }
 
   const resultRows = [];
-  for (const kv of Object.keys(_colValuesByGroupBy)) {
+  for (const key of Object.keys(_colValuesByGroupBy)) {
     const r = {
-      [groupBy]: kv,
-      _groupedValues: _colValuesByGroupBy[kv]
+      _groupedValues: _colValuesByGroupBy[key]
+    }
+    const values = key.split(US);
+    for (let i = 0; i < groupBys.length; i++) {
+      r[groupBys[i]] = values[i];
     }
     resultRows.push(r);
   }
@@ -478,13 +482,14 @@ const SELECT = (table, columns) => {
   };
 }
 
-let result = GROUP_BY(employee, 'department_id');
+let result = GROUP_BY(employee, ['department_id', 'status']);
 result = ARRAY_AGG(result, 'salary');
+result = ARRAY_AGG(result, 'name');
 result = AVG(result, 'salary');
 result = MAX(result, 'salary');
 result = MIN(result, 'salary');
 result = COUNT(result, 'salary');
-const sel = SELECT(result, ['MAX(salary)']);
+const sel = SELECT(result, ['department_id','status','ARRAY_AGG(name)','MAX(salary)']);
 debugger;
 csv(sel);
 
