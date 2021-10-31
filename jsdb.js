@@ -1,5 +1,7 @@
 // Joshua Weinberg 2020
 
+const US = String.fromCharCode(0x1f); // unitSeparator
+
 // cross takes two tables and returns a table which includes a cross join of all rows
 const CROSS_JOIN = (a, b) => {
   const result = {
@@ -107,7 +109,6 @@ const csv = (a) => {
   a.rows.forEach((i) => delete i["_groupedValues"]);
   console.log(Object.keys(a.rows[0]).join(','));
   for (i of a.rows) {
-    debugger;
     const outputValues = [];
     for (value of Object.values(i)) {
       if (value === '') {
@@ -121,6 +122,16 @@ const csv = (a) => {
     console.log(outputValues.join(','));
   }
 };
+
+const table = (a) => {
+  a.rows.forEach((i) => delete i["_tableRows"]);
+  a.rows.forEach((i) => delete i["_groupedValues"]);
+  const out = [];
+  for (r of a.rows) {
+    out.push(r);
+  }
+  console.table(out);
+}
 
 /******************
  *
@@ -332,7 +343,6 @@ csv(result);
    }
  */
 const GROUP_BY = (table, groupBys) => {
-  const US = String.fromCharCode(0x1f); // unitSeparator
   _colValuesByGroupBy = {}
 
   for (const row of table.rows) {
@@ -450,7 +460,6 @@ result:
  */
 
 // Having takes an aggregate function and a predicate
-
 // todo
 
 /**
@@ -463,15 +472,21 @@ result:
  * SELECT
  */
 
-// Pick columns from the provided table
-
-const SELECT = (table, columns) => {
+// Select just picks columns from the provided table and optionally renames the columns
+// aliases are a map of {column:alias}
+const SELECT = (table, columns, aliases = {}) => {
   const newRows = [];
+
+  const colNames = {};
+
+  for (const col of columns) {
+    colNames[col] = aliases[col] ? aliases[col] : col;
+  }
 
   for (const row of table.rows) {
     const newRow = {};
     for (column of columns) {
-      newRow[column] = row[column];
+      newRow[colNames[column]] = row[column];
     }
     newRows.push(newRow);
   }
@@ -482,30 +497,191 @@ const SELECT = (table, columns) => {
   };
 }
 
+/*
 let result = GROUP_BY(employee, ['department_id', 'status']);
-result = ARRAY_AGG(result, 'salary');
 result = ARRAY_AGG(result, 'name');
-result = AVG(result, 'salary');
 result = MAX(result, 'salary');
-result = MIN(result, 'salary');
-result = COUNT(result, 'salary');
-const sel = SELECT(result, ['department_id','status','ARRAY_AGG(name)','MAX(salary)']);
-debugger;
-csv(sel);
+result = COUNT(result);
+const sel = SELECT(result, ['department_id','status','ARRAY_AGG(name)','MAX(salary)','COUNT()']);
+table(sel);
+*/
 
 
+/**
+ * DISTINCT
+ */
 
+// Distinct takes a table and reduces the rows based on unique columns given
+// only the columns given will be returned in the resulting table
 
+const DISTINCT = (table, columns) => {
+  const _colValuesByDistinct = {}
+  for (const row of table.rows) {
+    // make key out of all column values for this row separated by unit separator
+    let key = columns.map(column => row[column]).join(US);
+    if (!_colValuesByDistinct[key]) {
+      _colValuesByDistinct[key] = {};
+    }
+    for (const col of columns) {
+      _colValuesByDistinct[key][col] = row[col]
+    }
+  }
 
+  debugger;
+  const newRows = [];
+  for (key of Object.keys(_colValuesByDistinct)) {
+    const newRow = {};
+    for (let i = 0; i < columns.length; i++) {
+      newRow[columns[i]] = _colValuesByDistinct[key][columns[i]]
+    }
+    newRows.push(newRow);
+  }
 
+  return {
+    name: table.name,
+    rows: newRows,
+  };
+}
 
+// demo distinct
+/*
+const sel = SELECT(employee, ['status','name']);
+const d = DISTINCT(sel, ['status','name']);
+table(d);
+*/
 
+// This query joins on charity_group and then does distinct on status and charity_group.name
+// which leads to (active, Cat Lovers) and (inactive, Environmentalists) being condensed to a single row
+// SELECT distinct status, charity_group.name, COUNT(*) AS count FROM employee
+// JOIN employee_charity_group ON employee_charity_group.a = employee.id
+// JOIN charity_group ON charity_group.id = employee_charity_group.b
+// GROUP BY status, charity_group.name
 
+/*
+Result:
+┌─────────┬─────────────────┬──────────────────────┬───────┐
+│ (index) │ employee.status │  charity_group.name  │ count │
+├─────────┼─────────────────┼──────────────────────┼───────┤
+│    0    │   'inactive'    │     'Cat Lovers'     │   1   │
+│    1    │   'inactive'    │ 'Environmentalists'  │   2   │
+│    2    │    'active'     │     'Cat Lovers'     │   2   │
+│    3    │   'inactive'    │ 'Education for Kids' │   1   │
+│    4    │    'active'     │   'House Builders'   │   1   │
+│    5    │    'active'     │ 'Food for the Needy' │   1   │
+│    6    │    'active'     │ 'Environmentalists'  │   1   │
+└─────────┴─────────────────┴──────────────────────┴───────┘
+ */
 
+// First do join via join table as above
+/*
+result = INNER_JOIN(
+  employee,
+  employee_charity_group,
+  (c) => c["employee_charity_group.A"] === c["employee.id"]
+);
+result = INNER_JOIN(
+  result,
+  charity_group,
+  (c) => c["employee_charity_group.B"] === c["charity_group.id"]
+);
+// then Group By and aggregates
 
+result = GROUP_BY(result, ['employee.status', 'charity_group.name']);
+result = COUNT(result, 'charity_group.name');
 
+// then apply SELECT
+result = SELECT(result, ['employee.status', 'charity_group.name','COUNT(charity_group.name)'],{'COUNT(charity_group.name)': 'count'})
+table(result);
+*/
 
+/**
+ * ORDER_BY
+ */
 
+// ORDER_BY sorts the given table using the provided relation function
+// the relation function takes two rows and returns -1 if row A comes first or 1 if row B comes first
+
+const ORDER_BY = (table, rel) => {
+  return {
+    name: table.name,
+    rows: table.rows.sort(rel),
+  }
+}
+
+// order by name
+/*
+result = SELECT(employee, ['name', 'status']);
+result = ORDER_BY(result, (a,b) => {
+  if (a.name < b.name) {
+    return -1;
+  } else {
+    return 1;
+  }
+});
+table(result);
+
+// order by status
+result = SELECT(employee, ['name', 'status']);
+result = ORDER_BY(result, (a,b) => {
+  if (a.status < b.status) {
+    return -1;
+  } else {
+    return 1;
+  }
+});
+table(result);
+*/
+
+/**
+ * OFFSET
+ */
+
+// OFFSET skips the number of rows before returning results
+
+const OFFSET = (table, offset) => {
+  return {
+    name: table.name,
+    rows: table.rows.slice(offset),
+  }
+}
+
+/*
+result = SELECT(employee, ['name', 'status', 'salary']);
+result = ORDER_BY(result, (a,b) => a.salary - b.salary);
+result = OFFSET(result, 2);
+table(result);
+*/
+
+/**
+ * LIMIT
+ */
+
+// LIMIT returns the number of rows specified
+
+const LIMIT = (table, limit) => {
+  return {
+    name: table.name,
+    rows: table.rows.slice(0, limit),
+  }
+}
+
+/*
+result = SELECT(employee, ['name', 'status', 'salary']);
+result = ORDER_BY(result, (a,b) => a.salary - b.salary);
+result = LIMIT(result, 4);
+table(result);
+*/
+
+// OFFSET and LIMIT used together paginate data
+
+result = SELECT(employee, ['name', 'status', 'salary']);
+result = ORDER_BY(result, (a,b) => a.salary - b.salary);
+let off = OFFSET(result, 0);
+let page = LIMIT(off, 4);
+table(page);
+off = OFFSET(result, 4);
+page = LIMIT(off, 4);
+table(page);
 
 
 
