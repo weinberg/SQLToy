@@ -1,8 +1,30 @@
 # jsdb
 
-SQL operations written in Javascript to demonstrate how JOINs work in SQL.
+SQL operations written in Javascript for educational purposes.
 
-# What is a Join?
+### Cool a new database! Is this a great database to use in production?
+
+Hell no. Don't use this for anything except learning about how SQL processes a query.
+
+### What operations are supported?
+
+Basic implementations of the following:
+
+- FROM
+- CROSS JOIN
+- INNER JOIN
+- LEFT JOIN
+- RIGHT JOIN
+- WHERE
+- GROUP BY
+- Aggregate functions: ARRAY_AGG, MAX, MIN, COUNT
+- SELECT
+- DISTINCT
+- ORDER BY
+- OFFSET
+- LIMIT
+
+### What is a Join?
 
 A join operation in a relational database is a cross-join of the joined tables with a filtering predicate applied to the
 result.
