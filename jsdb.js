@@ -336,14 +336,15 @@ const GROUP_BY = (table, groupBy) => {
   }
   _colValuesByGroupBy = {}
   for (const row of table.rows) {
-    if (!_colValuesByGroupBy[row[groupBy]]) {
-      _colValuesByGroupBy[row[groupBy]] = {};
+    const key = row[groupBy]
+    if (!_colValuesByGroupBy[key]) {
+      _colValuesByGroupBy[key] = {};
     }
     for (const col of Object.keys(row)) {
-      if (!_colValuesByGroupBy[row[groupBy]][col]) {
-        _colValuesByGroupBy[row[groupBy]][col] = [];
+      if (!_colValuesByGroupBy[key][col]) {
+        _colValuesByGroupBy[key][col] = [];
       }
-      _colValuesByGroupBy[row[groupBy]][col].push(row[col])
+      _colValuesByGroupBy[key][col].push(row[col])
     }
   }
 
@@ -421,6 +422,7 @@ csv(avgs)
 
 // Two aggregate columns:
 // console.log('SELECT department_id, avg(salary), array_agg(salary) FROM employee GROUP BY department_id');
+/*
 let result = GROUP_BY(employee, 'department_id');
 result = ARRAY_AGG(result, 'salary');
 result = AVG(result, 'salary');
@@ -428,6 +430,7 @@ result = MAX(result, 'salary');
 result = MIN(result, 'salary');
 result = COUNT(result, 'salary');
 csv(result)
+ */
 
 /*
 result:
@@ -437,6 +440,53 @@ result:
    3             | [200000]          | 200000      | 200000      | 200000      | 1             ║
    null          | [120000,200000]   | 160000      | 200000      | 120000      | 2             ║
 */
+
+/**
+ * HAVING
+ */
+
+// Having takes an aggregate function and a predicate
+
+// todo
+
+/**
+ * WINDOW
+ */
+
+// todo
+
+/**
+ * SELECT
+ */
+
+// Pick columns from the provided table
+
+const SELECT = (table, columns) => {
+  const newRows = [];
+
+  for (const row of table.rows) {
+    const newRow = {};
+    for (column of columns) {
+      newRow[column] = row[column];
+    }
+    newRows.push(newRow);
+  }
+
+  return {
+    name: table.name,
+    rows: newRows,
+  };
+}
+
+let result = GROUP_BY(employee, 'department_id');
+result = ARRAY_AGG(result, 'salary');
+result = AVG(result, 'salary');
+result = MAX(result, 'salary');
+result = MIN(result, 'salary');
+result = COUNT(result, 'salary');
+const sel = SELECT(result, ['MAX(salary)']);
+debugger;
+csv(sel);
 
 
 
