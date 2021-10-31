@@ -554,6 +554,7 @@ table(d);
 // SELECT distinct status, charity_group.name, COUNT(*) AS count FROM employee
 // JOIN employee_charity_group ON employee_charity_group.a = employee.id
 // JOIN charity_group ON charity_group.id = employee_charity_group.b
+// WHERE employee.salary > 150000
 // GROUP BY status, charity_group.name
 
 /*
@@ -572,7 +573,6 @@ Result:
  */
 
 // First do join via join table as above
-/*
 result = INNER_JOIN(
   employee,
   employee_charity_group,
@@ -583,6 +583,10 @@ result = INNER_JOIN(
   charity_group,
   (c) => c["employee_charity_group.B"] === c["charity_group.id"]
 );
+
+// then WHERE
+result = WHERE(result, (row) => row['employee.salary'] > 150000);
+
 // then Group By and aggregates
 
 result = GROUP_BY(result, ['employee.status', 'charity_group.name']);
@@ -590,8 +594,9 @@ result = COUNT(result, 'charity_group.name');
 
 // then apply SELECT
 result = SELECT(result, ['employee.status', 'charity_group.name','COUNT(charity_group.name)'],{'COUNT(charity_group.name)': 'count'})
+result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count'])
 table(result);
-*/
+process.exit();
 
 /**
  * ORDER_BY
