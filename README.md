@@ -253,3 +253,9 @@ department.id,department.name,employee.id,employee.name,employee.department_id
 3,Management,3,Ruth,3
 4,Consultants,,,
 ```
+
+# References
+
+A good primer on SQL operation execution order:
+
+https://blog.jooq.org/a-beginners-guide-to-the-true-order-of-sql-operations/
