@@ -2,7 +2,7 @@
  * DISTINCT
  */
 
-import {US} from "../util";
+import {US} from "./util.js";
 
 // Distinct takes a table and reduces the rows based on unique columns given
 // only the columns given will be returned in the resulting table
