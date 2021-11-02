@@ -1,0 +1,36 @@
+Arguments: 
+  /Users/josh/.nodenv/versions/14.9.0/bin/node /usr/local/Cellar/yarn/1.22.15/libexec/bin/yarn.js init
+
+PATH: 
+  /Users/josh/.nodenv/versions/14.9.0/bin:/usr/local/Cellar/nodenv/1.4.0/libexec:/usr/local/go/bin:/Users/josh/opt/anaconda3/bin:/Users/josh/opt/anaconda3/condabin:/Users/josh/.opam/default/bin:/Users/josh/.nodenv/shims:/Users/josh/.nvm/versions/node/v12.18.2/bin:/Users/josh/.yarn/bin:/Users/josh/.cabal/bin:/Users/josh/.ghcup/bin:/Users/josh/.ebcli-virtual-env/executables:/Users/josh/go/bin:~/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/local/bin:/opt/local/sbin:/Applications/LibreOffice.app/Contents/MacOS:/usr/local/nvim-osx64/bin:/Users/josh/optio-neo4j/bin:/Users/josh/bin:/Users/josh/.local/bin:/usr/local/share/dotnet:/Library/Frameworks/Mono.framework/Versions/Current/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/josh/go/bin
+
+Yarn version: 
+  1.22.15
+
+Node version: 
+  14.9.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (/usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:137145:13)
+      at Interface.emit (events.js:314:20)
+      at Interface._ttyWrite (readline.js:875:16)
+      at ReadStream.onkeypress (readline.js:213:10)
+      at ReadStream.emit (events.js:314:20)
+      at emitKeys (internal/readline/utils.js:335:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (readline.js:1144:36)
+      at ReadStream.emit (events.js:314:20)
+      at addChunk (_stream_readable.js:303:12)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

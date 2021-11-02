@@ -1,0 +1,11 @@
+{
+  "name": "jsdb",
+  "version": "1.0.0",
+  "description": "SQL implemented in javascript",
+  "main": "index.js",
+  "repository": "git@weinberg.github.com:weinberg/jsdb.git",
+  "author": "Joshua Weinberg",
+  "license": "MIT",
+  "private": false,
+  "type": "module"
+}
