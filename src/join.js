@@ -85,4 +85,4 @@ const RIGHT_JOIN = (a, b, pred) => {
   return LEFT_JOIN(b, a, pred);
 };
 
-export { CROSS_JOIN, INNER_JOIN, LEFT_JOIN, RIGHT_JOIN }
+export { INNER_JOIN as JOIN, CROSS_JOIN, INNER_JOIN, LEFT_JOIN, RIGHT_JOIN }

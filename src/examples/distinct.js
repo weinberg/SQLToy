@@ -1,11 +1,12 @@
 import {table} from "../output.js";
-import {INNER_JOIN} from "../join.js";
+import {JOIN} from "../join.js";
 import {WHERE} from "../where.js";
 import {GROUP_BY} from "../groupBy.js";
 import {COUNT} from "../aggregate.js";
 import {SELECT} from "../select.js";
 import {DISTINCT} from "../distinct.js";
 import {charity_group, employee, employee_charity_group} from "./sampleData.js";
+import {ORDER_BY} from "../orderBy.js";
 
 // demo distinct
 
@@ -50,12 +51,12 @@ Result:
 
 // First do join via join table
 
-let result = INNER_JOIN(
+let result = JOIN(
   employee,
   employee_charity_group,
   (c) => c["employee_charity_group.A"] === c["employee.id"]
 );
-result = INNER_JOIN(
+result = JOIN(
   result,
   charity_group,
   (c) => c["employee_charity_group.B"] === c["charity_group.id"]
@@ -70,7 +71,9 @@ result = GROUP_BY(result, ['employee.status', 'charity_group.name']);
 result = COUNT(result, 'charity_group.name');
 
 // then apply SELECT
-result = SELECT(result, ['employee.status', 'charity_group.name','COUNT(charity_group.name)'],{'COUNT(charity_group.name)': 'count'})
-result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count'])
+result = SELECT(result, ['employee.status', 'charity_group.name', 'COUNT(charity_group.name)'], {'COUNT(charity_group.name)': 'count'});
+result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count']);
+result = ORDER_BY(result, (a, b) => a.count < b.count ? 1 : -1);
+
 table(result);
 
