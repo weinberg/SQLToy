@@ -14,6 +14,19 @@ result = ORDER_BY(result, (a,b) => {
 });
 table(result);
 
+/*
+┌───────────┬────────────┐
+│   name    │   status   │
+├───────────┼────────────┤
+│  Elliot   │   active   │
+│   Garth   │   active   │
+│   Jane    │   active   │
+│   Josh    │  inactive  │
+│  Michael  │   active   │
+│   Ruth    │  inactive  │
+└───────────┴────────────┘
+ */
+
 // order by status
 result = SELECT(employee, ['name', 'status']);
 result = ORDER_BY(result, (a,b) => {
@@ -24,3 +37,17 @@ result = ORDER_BY(result, (a,b) => {
   }
 });
 table(result);
+
+/*
+┌───────────┬────────────┐
+│   name    │   status   │
+├───────────┼────────────┤
+│   Jane    │   active   │
+│  Elliot   │   active   │
+│  Michael  │   active   │
+│   Garth   │   active   │
+│   Josh    │  inactive  │
+│   Ruth    │  inactive  │
+└───────────┴────────────┘
+
+ */

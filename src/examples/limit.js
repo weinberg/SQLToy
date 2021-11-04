@@ -9,3 +9,14 @@ result = ORDER_BY(result, (a,b) => a.salary - b.salary);
 result = LIMIT(result, 4);
 table(result);
 
+/*
+┌───────────┬────────────┬────────┐
+│   name    │   status   │ salary │
+├───────────┼────────────┼────────┤
+│  Michael  │   active   │ 120000 │
+│   Josh    │  inactive  │ 150000 │
+│   Jane    │   active   │ 160000 │
+│  Elliot   │   active   │ 180000 │
+└───────────┴────────────┴────────┘
+
+*/

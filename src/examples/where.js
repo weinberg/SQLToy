@@ -2,7 +2,7 @@
 // First do an inner join on employee and department
 import {INNER_JOIN} from "../join.js";
 import {WHERE} from "../where.js";
-import {csv} from "../output.js";
+import {table} from "../output.js";
 import {charity_group, department, employee, employee_charity_group} from "./sampleData.js";
 
 const employeeDept = INNER_JOIN(
@@ -15,7 +15,17 @@ const employeeDept = INNER_JOIN(
 let result = WHERE(employeeDept, (row) => {
   return row['employee.salary'] > 150000;
 });
-csv(result);
+table(result);
+
+/*
+┌─────────────┬───────────────┬─────────────────┬────────────────────────┬─────────────────┬───────────────┬─────────────────┐
+│ employee.id │ employee.name │ employee.salary │ employee.department_id │ employee.status │ department.id │ department.name │
+├─────────────┼───────────────┼─────────────────┼────────────────────────┼─────────────────┼───────────────┼─────────────────┤
+│      2      │     Jane      │     160000      │           2            │     active      │       2       │   Engineering   │
+│      3      │     Ruth      │     200000      │           1            │    inactive     │       1       │      Sales      │
+│      4      │    Elliot     │     180000      │           1            │     active      │       1       │      Sales      │
+└─────────────┴───────────────┴─────────────────┴────────────────────────┴─────────────────┴───────────────┴─────────────────┘
+*/
 
 // SELECT * FROM employee
 //  JOIN employee_charity_group ON employee_charity_group.a = employee.id
@@ -36,4 +46,13 @@ const join2 = INNER_JOIN(
 result = WHERE(join2, (row) => {
   return row['employee.salary'] > 150000 && row['charity_group.name'] === 'Cat Lovers';
 });
-csv(result);
+table(result);
+
+/*
+┌─────────────┬───────────────┬─────────────────┬────────────────────────┬─────────────────┬──────────────────────────┬──────────────────────────┬──────────────────┬────────────────────┐
+│ employee.id │ employee.name │ employee.salary │ employee.department_id │ employee.status │ employee_charity_group.A │ employee_charity_group.B │ charity_group.id │ charity_group.name │
+├─────────────┼───────────────┼─────────────────┼────────────────────────┼─────────────────┼──────────────────────────┼──────────────────────────┼──────────────────┼────────────────────┤
+│      2      │     Jane      │     160000      │           2            │     active      │            2             │            1             │        1         │     Cat Lovers     │
+│      4      │    Elliot     │     180000      │           1            │     active      │            4             │            1             │        1         │     Cat Lovers     │
+└─────────────┴───────────────┴─────────────────┴────────────────────────┴─────────────────┴──────────────────────────┴──────────────────────────┴──────────────────┴────────────────────┘
+*/

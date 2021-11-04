@@ -8,3 +8,11 @@ let result = GROUP_BY(employee, ['department_id']);
 result = COUNT(result, 'department_id');
 result = HAVING(result, (row) => row['COUNT(department_id)'] > 2);
 table(result);
+
+/*
+┌───────────────┬──────────────────────┐
+│ department_id │ COUNT(department_id) │
+├───────────────┼──────────────────────┤
+│       1       │          3           │
+└───────────────┴──────────────────────┘
+ */

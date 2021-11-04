@@ -10,3 +10,5 @@ const OFFSET = (table, offset) => {
     rows: table.rows.slice(offset),
   }
 }
+
+export { OFFSET }

@@ -8,14 +8,26 @@ import {DISTINCT} from "../distinct.js";
 import {charity_group, employee, employee_charity_group} from "./sampleData.js";
 
 // demo distinct
+
+// Distinct on status
 /*
-const sel = SELECT(employee, ['status','name']);
-const d = DISTINCT(sel, ['status','name']);
+const sel = SELECT(employee, ['status']);
+const d = DISTINCT(sel, ['status']);
 table(d);
+process.exit();
+
+// Output:
+┌────────────┐
+│   status   │
+├────────────┤
+│ 'inactive' │
+│  'active'  │
+└────────────┘
 */
 
 // This query joins on charity_group and then does distinct on status and charity_group.name
 // which leads to (active, Cat Lovers) and (inactive, Environmentalists) being condensed to a single row
+//
 // SELECT distinct status, charity_group.name, COUNT(*) AS count FROM employee
 // JOIN employee_charity_group ON employee_charity_group.a = employee.id
 // JOIN charity_group ON charity_group.id = employee_charity_group.b
@@ -24,17 +36,16 @@ table(d);
 
 /*
 Result:
-┌─────────┬─────────────────┬──────────────────────┬───────┐
-│ (index) │ employee.status │  charity_group.name  │ count │
-├─────────┼─────────────────┼──────────────────────┼───────┤
-│    0    │   'inactive'    │     'Cat Lovers'     │   1   │
-│    1    │   'inactive'    │ 'Environmentalists'  │   2   │
-│    2    │    'active'     │     'Cat Lovers'     │   2   │
-│    3    │   'inactive'    │ 'Education for Kids' │   1   │
-│    4    │    'active'     │   'House Builders'   │   1   │
-│    5    │    'active'     │ 'Food for the Needy' │   1   │
-│    6    │    'active'     │ 'Environmentalists'  │   1   │
-└─────────┴─────────────────┴──────────────────────┴───────┘
+┌─────────────────┬──────────────────────┬───────┐
+│ employee.status │  charity_group.name  │ count │
+├─────────────────┼──────────────────────┼───────┤
+│     active      │      Cat Lovers      │   2   │
+│    inactive     │  Environmentalists   │   1   │
+│    inactive     │  Education for Kids  │   1   │
+│     active      │    House Builders    │   1   │
+│     active      │  Food for the Needy  │   1   │
+│     active      │  Environmentalists   │   1   │
+└─────────────────┴──────────────────────┴───────┘
  */
 
 // First do join via join table
