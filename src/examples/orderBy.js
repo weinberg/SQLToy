@@ -1,17 +1,20 @@
 // order by name
 import {SELECT} from "../select.js";
 import {table} from "../output.js";
-import {employee} from "./sampleData.js";
 import {ORDER_BY} from "../orderBy.js";
+import {FROM} from "../from.js";
+import {initJSDB} from "../index.js";
+import {setupSampleDatabase} from "./sampleData.js";
 
-let result = SELECT(employee, ['name', 'status']);
-result = ORDER_BY(result, (a,b) => {
-  if (a.name < b.name) {
-    return -1;
-  } else {
-    return 1;
-  }
-});
+initJSDB();
+setupSampleDatabase();
+let employee;
+let result;
+
+employee = FROM('employee');
+result = SELECT(employee, ['name', 'status']);
+result = ORDER_BY(result, (a,b) => { if (a.name < b.name) { return -1; } else { return 1; } });
+console.log('Order by name:');
 table(result);
 
 /*
@@ -28,14 +31,10 @@ table(result);
  */
 
 // order by status
+employee = FROM('employee');
 result = SELECT(employee, ['name', 'status']);
-result = ORDER_BY(result, (a,b) => {
-  if (a.status < b.status) {
-    return -1;
-  } else {
-    return 1;
-  }
-});
+result = ORDER_BY(result, (a,b) => { if (a.status < b.status) { return -1; } else { return 1; } });
+console.log('Order by status:');
 table(result);
 
 /*

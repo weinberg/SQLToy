@@ -3,16 +3,22 @@
 import {INNER_JOIN} from "../join.js";
 import {WHERE} from "../where.js";
 import {table} from "../output.js";
-import {charity_group, department, employee, employee_charity_group} from "./sampleData.js";
+import {setupSampleDatabase} from "./sampleData.js";
+import {initJSDB} from "../index.js";
+import {FROM} from "../from.js";
 
-const employeeDept = INNER_JOIN(
-  employee,
-  department,
-  (c) => c["employee.department_id"] === c["department.id"]
-);
+initJSDB();
+setupSampleDatabase();
+let employee;
+let department;
+let result;
+let employee_charity_group;
+let charity_group;
 
-// then apply the WHERE clause
-let result = WHERE(employeeDept, (row) => {
+employee = FROM('employee');
+department = FROM('department');
+result = INNER_JOIN(employee, department, (c) => c["employee.department_id"] === c["department.id"]);
+result = WHERE(result, (row) => {
   return row['employee.salary'] > 150000;
 });
 table(result);
@@ -32,18 +38,14 @@ table(result);
 //  JOIN charity_group ON charity_group.id = employee_charity_group.b
 //  WHERE salary > 150000 AND charity_group.name = 'Cat Lovers';
 // First do join via join table as above
-const join1 = INNER_JOIN(
-  employee,
-  employee_charity_group,
-  (c) => c["employee_charity_group.A"] === c["employee.id"]
-);
-const join2 = INNER_JOIN(
-  join1,
-  charity_group,
-  (c) => c["employee_charity_group.B"] === c["charity_group.id"]
-);
-// Then apply the WHERE clause
-result = WHERE(join2, (row) => {
+
+employee = FROM('employee');
+department = FROM('department');
+employee_charity_group = FROM('employee_charity_group');
+charity_group = FROM('charity_group');
+result = INNER_JOIN(employee, employee_charity_group, (c) => c["employee_charity_group.A"] === c["employee.id"]);
+result = INNER_JOIN(result, charity_group, (c) => c["employee_charity_group.B"] === c["charity_group.id"]);
+result = WHERE(result, (row) => {
   return row['employee.salary'] > 150000 && row['charity_group.name'] === 'Cat Lovers';
 });
 table(result);

@@ -1,23 +1,32 @@
 import {table} from "../output.js";
+import {SELECT} from "../select.js";
+import {DISTINCT} from "../distinct.js";
+import {initJSDB} from "../index.js";
+import {setupSampleDatabase} from "./sampleData.js";
+import {FROM} from "../from.js";
 import {JOIN} from "../join.js";
 import {WHERE} from "../where.js";
 import {GROUP_BY} from "../groupBy.js";
 import {COUNT} from "../aggregate.js";
-import {SELECT} from "../select.js";
-import {DISTINCT} from "../distinct.js";
-import {charity_group, employee, employee_charity_group} from "./sampleData.js";
 import {ORDER_BY} from "../orderBy.js";
 
 // demo distinct
 
+initJSDB();
+setupSampleDatabase();
+let employee;
+let charity_group;
+let employee_charity_group;
+let result;
+
 // Distinct on status
-/*
-const sel = SELECT(employee, ['status']);
-const d = DISTINCT(sel, ['status']);
-table(d);
-process.exit();
+employee = FROM('employee');
+result = SELECT(employee, ['status']);
+result = DISTINCT(result, ['status']);
+table(result);
 
 // Output:
+/*
 ┌────────────┐
 │   status   │
 ├────────────┤
@@ -51,29 +60,16 @@ Result:
 
 // First do join via join table
 
-let result = JOIN(
-  employee,
-  employee_charity_group,
-  (c) => c["employee_charity_group.A"] === c["employee.id"]
-);
-result = JOIN(
-  result,
-  charity_group,
-  (c) => c["employee_charity_group.B"] === c["charity_group.id"]
-);
-
-// then WHERE
+employee = FROM('employee');
+charity_group = FROM('charity_group');
+employee_charity_group = FROM('employee_charity_group');
+result = JOIN(employee, employee_charity_group, (c) => c["employee_charity_group.A"] === c["employee.id"]);
+result = JOIN(result, charity_group, (c) => c["employee_charity_group.B"] === c["charity_group.id"]);
 result = WHERE(result, (row) => row['employee.salary'] > 150000);
-
-// then Group By and aggregates
-
 result = GROUP_BY(result, ['employee.status', 'charity_group.name']);
 result = COUNT(result, 'charity_group.name');
-
-// then apply SELECT
 result = SELECT(result, ['employee.status', 'charity_group.name', 'COUNT(charity_group.name)'], {'COUNT(charity_group.name)': 'count'});
 result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count']);
 result = ORDER_BY(result, (a, b) => a.count < b.count ? 1 : -1);
 
 table(result);
-
