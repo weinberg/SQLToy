@@ -4,8 +4,8 @@
 
 import {US} from "./util.js";
 
-// Distinct takes a table and reduces the rows based on unique columns given
-// only the columns given will be returned in the resulting table
+// Distinct takes a table and reduces the rows based on unique values in the columns given.
+// Only the columns given will be returned in the resulting table.
 
 const DISTINCT = (table, columns) => {
   const _colValuesByDistinct = {}

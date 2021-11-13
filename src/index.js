@@ -2,14 +2,13 @@
  * JSDB
  */
 
-// global datastore
-global.datbase = {}
+let database = {}
 
 function initJSDB() {
-  global.database = {
+  database = {
     tables: {}
   }
 
 }
 
-export { initJSDB }
+export { initJSDB, database }

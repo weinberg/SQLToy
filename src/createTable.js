@@ -1,18 +1,20 @@
+import { database } from './index.js';
+
 /**
  * CREATE_TABLE
  */
 
 function CREATE_TABLE(name) {
-  if (global.database.tables[name]) {
+  if (database.tables[name]) {
     throw new Error('Table already exists');
   }
 
-  global.database.tables[name] = {
+  database.tables[name] = {
     name,
     rows: []
   }
 
-  return global.database.tables[name];
+  return database.tables[name];
 }
 
 export { CREATE_TABLE }

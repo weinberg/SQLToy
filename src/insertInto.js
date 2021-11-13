@@ -1,5 +1,7 @@
+import { database } from './index.js';
+
 function INSERT_INTO(tableName, row) {
-  const table = global.database.tables[tableName];
+  const table = database.tables[tableName];
   if (!table) {
     throw new Error('Table not found');
   }

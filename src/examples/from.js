@@ -1,8 +1,11 @@
 import {table} from "../output.js";
-import {INNER_JOIN, LEFT_JOIN, RIGHT_JOIN} from "../join.js";
+import {CROSS_JOIN, INNER_JOIN, LEFT_JOIN, RIGHT_JOIN} from "../join.js";
 import {FROM} from "../from.js";
 import {setupSampleDatabase} from "./sampleData.js";
 import {initJSDB} from "../index.js";
+import {CREATE_TABLE} from "../createTable.js";
+import {INSERT_INTO} from "../insertInto.js";
+import {SELECT} from "../select.js";
 
 // Demo
 initJSDB();
@@ -12,6 +15,30 @@ let department;
 let charity_group;
 let employee_charity_group;
 let result;
+
+/***********************************/
+let test1 = CREATE_TABLE('test1');
+let test2 = CREATE_TABLE('test2');
+INSERT_INTO('test1',{ c: 'A' });
+INSERT_INTO('test1',{ c: 'B' });
+INSERT_INTO('test2',{ c: '1' });
+INSERT_INTO('test2',{ c: '2' });
+
+// manually doing cross join
+result = CROSS_JOIN(test1, test2);
+result = SELECT(CROSS_JOIN(test1,test2), ['test1.c','test2.c'])
+table(result);
+
+// giving multiple tables to FROM
+result = FROM(['test1', 'test2']);
+table(result);
+
+let test3 = CREATE_TABLE('test3');
+INSERT_INTO('test3',{ c: 'X' });
+INSERT_INTO('test3',{ c: 'Y' });
+result = FROM(['test1', 'test2', 'test3']);
+table(result);
+process.exit();
 
 /***********************************/
 
