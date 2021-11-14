@@ -7,6 +7,40 @@ import {INSERT_INTO} from "../insertInto.js";
  *
  *****************/
 
+/*
+employee
++------+--------+-----------------+
+| id   | name   | department_id   |
+|------+--------+-----------------|
+| 1    | Josh   | 1               |
+| 2    | Ruth   | 2               |
+| 3    | Greg   | <null>          |
++------+--------+-----------------+
+
+department
++------+-------------+
+| id   | name        |
+|------+-------------|
+| 1    | Sales       |
+| 2    | Marketing   |
+| 3    | Engineering |
++------+-------------+
+*/
+
+// simple data
+function setupSampleDatabase() {
+  CREATE_TABLE('employee');
+  INSERT_INTO('employee', {id: 1, name: "Josh", department_id: 1});
+  INSERT_INTO('employee', {id: 2, name: "Ruth", department_id: 2});
+  INSERT_INTO('employee', {id: 3, name: "Greg", department_id: null});
+
+  CREATE_TABLE('department');
+  INSERT_INTO('department', {id: 1, name: "Sales"});
+  INSERT_INTO('department', {id: 2, name: "Marketing"});
+  INSERT_INTO('department', {id: 3, name: "Engineering"});
+}
+/*
+// more complex data
 function setupSampleDatabase() {
   CREATE_TABLE('employee');
   INSERT_INTO('employee', {id: 1, name: "Josh", salary: 150000, department_id: 1, status: 'inactive'});
@@ -44,5 +78,6 @@ function setupSampleDatabase() {
   INSERT_INTO('employee_charity_group', {A: 4, B: 3},); // Elliot - Food for the Needy
   INSERT_INTO('employee_charity_group', {A: 4, B: 4},); // Elliot - Environmentalists
 }
+*/
 
 export {setupSampleDatabase}

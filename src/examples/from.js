@@ -17,6 +17,8 @@ let employee_charity_group;
 let result;
 
 /***********************************/
+
+/*
 let test1 = CREATE_TABLE('test1');
 let test2 = CREATE_TABLE('test2');
 INSERT_INTO('test1',{ c: 'A' });
@@ -39,6 +41,7 @@ INSERT_INTO('test3',{ c: 'Y' });
 result = FROM(['test1', 'test2', 'test3']);
 table(result);
 process.exit();
+*/
 
 /***********************************/
 
@@ -50,6 +53,7 @@ employee = FROM('employee');
 department = FROM('department');
 result = INNER_JOIN( employee, department, (c) => c["employee.department_id"] === c["department.id"] );
 table(result);
+process.exit();
 
 /***********************************/
 
