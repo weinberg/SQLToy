@@ -4,10 +4,10 @@ import {table} from "../output.js";
 import {ORDER_BY} from "../orderBy.js";
 import {FROM} from "../from.js";
 import {initJSDB} from "../index.js";
-import {setupSampleDatabase} from "./sampleData.js";
+import {setupDatabase} from "./sampleData.js";
 
 initJSDB();
-setupSampleDatabase();
+setupDatabase();
 let employee;
 let result;
 

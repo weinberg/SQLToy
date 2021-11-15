@@ -3,11 +3,11 @@ import {COUNT} from "../aggregate.js";
 import {table} from "../output.js";
 import {HAVING} from "../having.js";
 import {initJSDB} from "../index.js";
-import {setupSampleDatabase} from "./sampleData.js";
+import {setupDatabase} from "./sampleData.js";
 import {FROM} from "../from.js";
 
 initJSDB();
-setupSampleDatabase();
+setupDatabase();
 let employee;
 let result;
 

@@ -2,7 +2,7 @@ import {table} from "../output.js";
 import {SELECT} from "../select.js";
 import {DISTINCT} from "../distinct.js";
 import {initJSDB} from "../index.js";
-import {setupSampleDatabase} from "./sampleData.js";
+import {setupDatabase} from "./sampleData.js";
 import {FROM} from "../from.js";
 import {JOIN} from "../join.js";
 import {WHERE} from "../where.js";
@@ -13,10 +13,10 @@ import {ORDER_BY} from "../orderBy.js";
 // demo distinct
 
 initJSDB();
-setupSampleDatabase();
+setupDatabase();
 let employee;
-let charity_group;
-let employee_charity_group;
+let club;
+let employee_club;
 let result;
 
 // Distinct on status
@@ -35,19 +35,19 @@ table(result);
 └────────────┘
 */
 
-// This query joins on charity_group and then does distinct on status and charity_group.name
+// This query joins on club and then does distinct on status and club.name
 // which leads to (active, Cat Lovers) and (inactive, Environmentalists) being condensed to a single row
 //
-// SELECT distinct status, charity_group.name, COUNT(*) AS count FROM employee
-// JOIN employee_charity_group ON employee_charity_group.a = employee.id
-// JOIN charity_group ON charity_group.id = employee_charity_group.b
+// SELECT distinct status, club.name, COUNT(*) AS count FROM employee
+// JOIN employee_club ON employee_club.a = employee.id
+// JOIN club ON club.id = employee_club.b
 // WHERE employee.salary > 150000
-// GROUP BY status, charity_group.name
+// GROUP BY status, club.name
 
 /*
 Result:
 ┌─────────────────┬──────────────────────┬───────┐
-│ employee.status │  charity_group.name  │ count │
+│ employee.status │  club.name  │ count │
 ├─────────────────┼──────────────────────┼───────┤
 │     active      │      Cat Lovers      │   2   │
 │    inactive     │  Environmentalists   │   1   │
@@ -61,15 +61,15 @@ Result:
 // First do join via join table
 
 employee = FROM('employee');
-charity_group = FROM('charity_group');
-employee_charity_group = FROM('employee_charity_group');
-result = JOIN(employee, employee_charity_group, (c) => c["employee_charity_group.A"] === c["employee.id"]);
-result = JOIN(result, charity_group, (c) => c["employee_charity_group.B"] === c["charity_group.id"]);
+club = FROM('club');
+employee_club = FROM('employee_club');
+result = JOIN(employee, employee_club, (c) => c["employee_club.A"] === c["employee.id"]);
+result = JOIN(result, club, (c) => c["employee_club.B"] === c["club.id"]);
 result = WHERE(result, (row) => row['employee.salary'] > 150000);
-result = GROUP_BY(result, ['employee.status', 'charity_group.name']);
-result = COUNT(result, 'charity_group.name');
-result = SELECT(result, ['employee.status', 'charity_group.name', 'COUNT(charity_group.name)'], {'COUNT(charity_group.name)': 'count'});
-result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count']);
+result = GROUP_BY(result, ['employee.status', 'club.name']);
+result = COUNT(result, 'club.name');
+result = SELECT(result, ['employee.status', 'club.name', 'COUNT(club.name)'], {'COUNT(club.name)': 'count'});
+result = DISTINCT(result, ['employee.status', 'club.name', 'count']);
 result = ORDER_BY(result, (a, b) => a.count < b.count ? 1 : -1);
 
 table(result);

@@ -3,14 +3,14 @@ import {SELECT} from "../select.js";
 import {ORDER_BY} from "../orderBy.js";
 import {OFFSET} from "../offset.js";
 import {LIMIT} from "../limit.js";
-import {setupSampleDatabase} from "./sampleData.js";
+import {setupDatabase} from "./sampleData.js";
 import {initJSDB} from "../index.js";
 import {FROM} from "../from.js";
 
 // OFFSET and LIMIT used together paginate data
 
 initJSDB();
-setupSampleDatabase();
+setupDatabase();
 let employee;
 let result;
 

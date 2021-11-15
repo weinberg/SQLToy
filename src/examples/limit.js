@@ -3,11 +3,11 @@ import {LIMIT} from "../limit.js";
 import {ORDER_BY} from "../orderBy.js";
 import {table} from "../output.js";
 import {initJSDB} from "../index.js";
-import {setupSampleDatabase} from "./sampleData.js";
+import {setupDatabase} from "./sampleData.js";
 import {FROM} from "../from.js";
 
 initJSDB();
-setupSampleDatabase();
+setupDatabase();
 let employee;
 let result;
 

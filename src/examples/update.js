@@ -1,12 +1,12 @@
 import {table} from "../output.js";
-import {setupSampleDatabase} from "./sampleData.js";
+import {setupDatabase} from "./sampleData.js";
 import {initJSDB} from "../index.js";
 import {FROM} from "../from.js";
 import {UPDATE} from "../update.js";
 
 
 initJSDB();
-setupSampleDatabase();
+setupDatabase();
 let employee;
 let result;
 

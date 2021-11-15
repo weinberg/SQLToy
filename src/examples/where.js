@@ -3,17 +3,23 @@
 import {INNER_JOIN} from "../join.js";
 import {WHERE} from "../where.js";
 import {table} from "../output.js";
-import {setupSampleDatabase} from "./sampleData.js";
+import {setupDatabase} from "./sampleData.js";
 import {initJSDB} from "../index.js";
 import {FROM} from "../from.js";
+import {CREATE_TABLE} from "../createTable.js";
+import {INSERT_INTO} from "../insertInto.js";
 
 initJSDB();
-setupSampleDatabase();
+setupDatabase();
 let employee;
 let department;
 let result;
-let employee_charity_group;
-let charity_group;
+let employee_club;
+let club;
+
+employee = FROM('employee');
+result = WHERE(employee, (c) => c["department_id"] === 1);
+table(result);
 
 employee = FROM('employee');
 department = FROM('department');
@@ -34,27 +40,43 @@ table(result);
 */
 
 // SELECT * FROM employee
-//  JOIN employee_charity_group ON employee_charity_group.a = employee.id
-//  JOIN charity_group ON charity_group.id = employee_charity_group.b
-//  WHERE salary > 150000 AND charity_group.name = 'Cat Lovers';
+//  JOIN employee_club ON employee_club.a = employee.id
+//  JOIN club ON club.id = employee_club.b
+//  WHERE salary > 150000 AND club.name = 'Cat Lovers';
 // First do join via join table as above
 
 employee = FROM('employee');
 department = FROM('department');
-employee_charity_group = FROM('employee_charity_group');
-charity_group = FROM('charity_group');
-result = INNER_JOIN(employee, employee_charity_group, (c) => c["employee_charity_group.A"] === c["employee.id"]);
-result = INNER_JOIN(result, charity_group, (c) => c["employee_charity_group.B"] === c["charity_group.id"]);
+employee_club = FROM('employee_club');
+club = FROM('club');
+result = INNER_JOIN(employee, employee_club, (c) => c["employee_club.A"] === c["employee.id"]);
+result = INNER_JOIN(result, club, (c) => c["employee_club.B"] === c["club.id"]);
+table(result);
 result = WHERE(result, (row) => {
-  return row['employee.salary'] > 150000 && row['charity_group.name'] === 'Cat Lovers';
+  return row['employee.salary'] > 150000 && row['club.name'] === 'Cat Lovers';
 });
 table(result);
 
 /*
 ┌─────────────┬───────────────┬─────────────────┬────────────────────────┬─────────────────┬──────────────────────────┬──────────────────────────┬──────────────────┬────────────────────┐
-│ employee.id │ employee.name │ employee.salary │ employee.department_id │ employee.status │ employee_charity_group.A │ employee_charity_group.B │ charity_group.id │ charity_group.name │
+│ employee.id │ employee.name │ employee.salary │ employee.department_id │ employee.status │ employee_club.A │ employee_club.B │ club.id │ club.name │
 ├─────────────┼───────────────┼─────────────────┼────────────────────────┼─────────────────┼──────────────────────────┼──────────────────────────┼──────────────────┼────────────────────┤
 │      2      │     Jane      │     160000      │           2            │     active      │            2             │            1             │        1         │     Cat Lovers     │
 │      4      │    Elliot     │     180000      │           1            │     active      │            4             │            1             │        1         │     Cat Lovers     │
 └─────────────┴───────────────┴─────────────────┴────────────────────────┴─────────────────┴──────────────────────────┴──────────────────────────┴──────────────────┴────────────────────┘
 */
+
+CREATE_TABLE('test1');
+INSERT_INTO('test1', {id: 1, name: 'Josh', test_2_id: 1});
+CREATE_TABLE('test2');
+INSERT_INTO('test2', {id: 1, name: 'Engineering', test_3_id: 1});
+CREATE_TABLE('test3');
+INSERT_INTO('test3', {id: 1, name: 'First Floor', test_3_id: 1});
+debugger;
+let test1 = FROM('test1');
+let test2 = FROM('test2');
+let test3 = FROM('test3');
+result = INNER_JOIN(test1, test2, (c) => c["test1.test_2_id"] === c["test2.id"]);
+table(result);
+result = INNER_JOIN(result, test3, (c) => c["test2.test_3_id"] === c["test3.id"]);
+table(result);

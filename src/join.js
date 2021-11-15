@@ -9,39 +9,25 @@ const CROSS_JOIN = (a, b) => {
       const row = {};
 
       // for each column in a, create a column in the ouput
-      for (const k of Object.keys(x)) {
+      for (const k in x) {
         const columnName = a.name ? `${a.name}.${k}` : k;
         row[columnName] = x[k];
       }
 
       // for each column in b, create a column in the ouput
-      for (const k of Object.keys(y)) {
+      for (const k in y) {
         const columnName = b.name ? `${b.name}.${k}` : k;
         row[columnName] = y[k];
       }
 
+      // Store an array of the two columns used to make up this new row.
+      // This is used in LEFT_JOIN and RIGHT_JOIN.
       row._tableRows = [x, y];
+
       result.rows.push(row);
     }
   }
   return result;
-};
-
-// returns object with null column for all columns of a
-const nullValues = (a) => {
-  const result = {};
-  for (const k in a.rows[0]) {
-    result[`${a.name}.${k}`] = null;
-  }
-  return result;
-};
-
-const getResultRow = (name, a) => {
-  const row = {};
-  for (const k of Object.keys(a)) {
-    row[`${name}.${k}`] = a[k];
-  }
-  return row;
 };
 
 /**
@@ -55,26 +41,48 @@ const INNER_JOIN = (a, b, pred) => {
 };
 
 /**
- * leftJoin takes two tables and a predicate. Result will be a table which includes the cross join of all rows which satisfy the predicate or are from table a (with table b columns set to null).
+ * leftJoin takes two tables and a predicate. Result will be a table which includes all rows from the cross join which satisfy the predicate or in the case where no rows in b match for a row in a, a row with the values for b set to null.
  */
 const LEFT_JOIN = (a, b, pred) => {
+  // Start by taking the cross join of a,b and creating a result table.
   const cp = CROSS_JOIN(a, b);
   let result = {
     name: '',
+    rows: [],
   }
-  let rows = []
-  for (let i of a.rows) {
-    const cpa = cp.rows.filter((cpr) => cpr._tableRows.includes(i));
+
+  // for each row in a either return matching rows from the cross product
+  // or a row with nulls for b if there are no matches
+  for (let aRow of a.rows) {
+    // find all rows in cross product which come from this row in table a using the _tableRows array
+    const cpa = cp.rows.filter((cpr) => cpr._tableRows.includes(aRow));
+
+    // apply the filter
     const match = cpa.filter(pred);
+
     if (match.length) {
-      // we found a match so add to results table
-      rows = [...rows, ...match];
+      // we found at least one match so add to result rows
+      result.rows.push(...match);
     } else {
-      // we did not find a match so add a record with values from a and values of null for b
-      rows.push({...getResultRow(a.name, i), ...nullValues(b)});
+      // we did not find a match so create a row with values from a and nulls for b
+
+      let aValues = {};
+      let bValues = {};
+
+      // values from a
+      for (const key in aRow) {
+        aValues[`${a.name}.${key}`] = aRow[key];
+      }
+
+      // nulls for b
+      for (const key in b.rows[0]) {
+        bValues[`${b.name}.${key}`] = null;
+      }
+
+      result.rows.push({...aValues, ...bValues});
     }
   }
-  result.rows = rows;
+
   return result;
 };
 
