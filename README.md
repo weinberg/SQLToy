@@ -25,6 +25,7 @@ Implementations of the following:
 - LIMIT
 - CREATE TABLE
 - INSERT INTO
+- UPDATE
 
 ### How do I use this database?
 
