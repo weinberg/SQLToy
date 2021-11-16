@@ -1,6 +1,6 @@
 /**
  * GROUP_BY creates an array for each column in the input table (which can be the result of a JOIN, WHERE)
- * and populates that array with the values for that column from rows where the group by key is the same.
+ * and populates that array with the values for that column from rows where the group by keys are the same.
  */
 /*
    select department_id, array_agg(salary) from employees group by department_id
@@ -37,6 +37,9 @@
     ]
    }
  */
+
+// Or you could rewrite this with just references to the rows which are in each group
+
 import {US} from "./util.js";
 
 const GROUP_BY = (table, groupBys) => {

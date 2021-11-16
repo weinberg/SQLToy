@@ -1,14 +1,14 @@
-# jsdb
+# JSDB "toy" Database
 
-SQL operations written in Javascript for educational purposes.
+An simple in-memory SQL database written in Javascript for the purpose of understanding the relational model and SQL order of operations.
 
 ### Cool a new database! Is this a great database to use in production?
 
-No. Don't use this for anything except learning about how SQL processes a query.
+Lord, no. Don't use this for anything except learning about how SQL processes a query.
 
 ### What operations are supported?
 
-Basic implementations of the following:
+Implementations of the following:
 
 - SELECT
 - FROM
@@ -23,6 +23,8 @@ Basic implementations of the following:
 - ORDER BY
 - OFFSET
 - LIMIT
+- CREATE TABLE
+- INSERT INTO
 
 ### How do I use this database?
 
@@ -69,7 +71,6 @@ result = SELECT(result, ['employee.status', 'charity_group.name','COUNT(charity_
 result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count'])
 table(result);
 ```
-
 
 # References
 
