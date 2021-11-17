@@ -33,10 +33,10 @@ department
 // simple data
 function setupSimpleDatabase() {
   CREATE_TABLE('employee');
-  INSERT_INTO('employee', {id: 1, name: "Josh", department_id: 1});
-  INSERT_INTO('employee', {id: 2, name: "Ruth", department_id: 2});
-  INSERT_INTO('employee', {id: 3, name: "Greg", department_id: 5});
-  INSERT_INTO('employee', {id: 4, name: "Pat", department_id: 1});
+  INSERT_INTO('employee', {id: 1, name: "Josh", department_id: 1, salary: 50000});
+  INSERT_INTO('employee', {id: 2, name: "Ruth", department_id: 2, salary: 60000});
+  INSERT_INTO('employee', {id: 3, name: "Greg", department_id: 5, salary: 70000});
+  INSERT_INTO('employee', {id: 4, name: "Pat", department_id: 1, salary: 80000});
 
   CREATE_TABLE('department');
   INSERT_INTO('department', {id: 1, name: "Sales"});

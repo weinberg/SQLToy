@@ -1,6 +1,6 @@
-# JSDB "toy" Database
+# SQLToy
 
-An simple in-memory SQL database written in Javascript for the purpose of understanding the relational model and SQL order of operations.
+An in-memory SQL database written in Javascript for the purpose of explaining the relational model and SQL order of operations.
 
 ### Cool a new database! Is this a great database to use in production?
 
