@@ -2,7 +2,8 @@
 
 const aggregateHelper = (table, column, aggName, aggFunc) => {
   for (const row of table.rows) {
-    row[`${aggName}(${column})`] = aggFunc(row._groupedValues[column]);
+    const pick = row._groupedRows.map(gr => gr[column])
+    row[`${aggName}(${column})`] = aggFunc(pick);
   }
   return table;
 }
@@ -10,7 +11,7 @@ const aggregateHelper = (table, column, aggName, aggFunc) => {
 // ARRAY_AGG returns a table with a new aggregate column for the given grouped column
 // which just contains the list of the grouped values
 const ARRAY_AGG = (table, column) => {
-  return aggregateHelper(table, column, 'ARRAY_AGG', values => values);
+  return aggregateHelper(table, column, 'ARRAY_AGG', values => JSON.stringify(values));
 }
 
 // AVG returns a table with a new aggregate column for the given grouped column

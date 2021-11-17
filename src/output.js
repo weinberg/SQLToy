@@ -1,5 +1,5 @@
-import { Console } from 'console'
-import { Transform } from 'stream'
+import {Console} from 'console'
+import {Transform} from 'stream'
 
 // CSV output
 const csv = (a) => {
@@ -25,23 +25,34 @@ const csv = (a) => {
 // The console.table table has an extra "(index)" column which is very confusing in this context
 // so we remove it.
 
-const ts = new Transform({ transform(chunk, enc, cb) { cb(null, chunk) } })
-const logger = new Console({ stdout: ts })
+const ts = new Transform({
+  transform(chunk, enc, cb) {
+    cb(null, chunk)
+  }
+})
+const logger = new Console({stdout: ts})
 
 // @see https://stackoverflow.com/a/67859384
-function getTable (data) {
+function getTable(data) {
   logger.table(data)
   return (ts.read() || '').toString()
 }
 
-const table = (a) => {
-  a.rows.forEach((i) => delete i["_tableRows"]);
-  a.rows.forEach((i) => delete i["_groupedValues"]);
-  const out = [];
-  for (let r of a.rows) {
-    out.push(r);
+const table = (t) => {
+  let outRows;
+  outRows = [];
+  // make a copy of t without _ columns
+  for (const r of t.rows) {
+    const newRow = {};
+    for (const k in r) {
+      if (k[0] !== '_') {
+        newRow[k] = r[k];
+      }
+    }
+    outRows.push(newRow);
   }
-  let table = getTable(out);
+
+  let table = getTable(outRows);
   let result = '';
   for (let row of table.split(/[\r\n]+/)) {
     let r = row.replace(/[^┬]*┬/, '┌');
@@ -54,4 +65,4 @@ const table = (a) => {
   console.log(result);
 }
 
-export { csv, table }
+export {csv, table}
