@@ -2,13 +2,15 @@
 
 An in-memory SQL database written in Javascript for the purpose of explaining the relational model and SQL order of operations.
 
-### Cool a new database! Is this a great database to use in production?
+### Cool a new database! I will deploy this to production!
 
-Lord, no. Don't use this for anything except learning about how SQL processes a query.
+An excellent idea! Especially if you like downtime!
+
+Don't use this for anything except learning about SQL.
 
 ### What operations are supported?
 
-Implementations of the following:
+Currently:
 
 - SELECT
 - FROM
@@ -29,15 +31,12 @@ Implementations of the following:
 
 ### How do I use this database?
 
-The purpose of this database is education so the best way to "use" it is to go through the code and understand how the various operations are implemented. 
+The best introduction to this code is via the wiki. If you are a Javascript programmer I suspect you will find that it is much simpler than you think. Give it a look!
 
-If you are a Javascript programmer I suspect you will find that it is much simpler than you think. Give it a look!
+### But how do I _use_ it?
 
-### OK, smart-alec, but how do I _use_ it?
-
-The thing to understand is that all operations in this database (and _conceptually_ in a real database also) take tables as input and produce tables as output.
-So you take a table and provide it to an operation, getting a modified table back in return.
-To apply multiple operations, supply that modified database to the next operation.
+All operations in this database (and _conceptually_ in a real database also) take tables as input and produce tables as output.
+So you take a table and provide it to an operation, getting a new table back in return.  To apply multiple operations, supply that new table to the next operation.
 
 For example, the query:
 
