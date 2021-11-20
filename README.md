@@ -2,9 +2,7 @@
 
 An in-memory SQL database written in Javascript for the purpose of explaining the relational model and SQL order of operations.
 
-SQLToy is under 500 lines of code and has zero dependencies.
-
-SQLToy supports the following operations:
+SQLToy is under 500 lines of code and has zero dependencies. It supports the following operations:
 
     - SELECT
     - FROM
