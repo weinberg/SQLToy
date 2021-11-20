@@ -21,11 +21,11 @@ SQLToy is under 500 lines of code and has zero dependencies. It supports the fol
     - INSERT INTO
     - UPDATE
 
-### A new database! I shall deploy it to production!
+## A new database! I shall deploy it to production!
 
 An excellent idea, especially if you like downtime! No, just use SQLToy to learn about SQL.
 
-### Read the Wiki
+## Read the Wiki
 
 The core of this repo is not really the code but the walkthrough which describes what you need to understand it.
 
@@ -33,7 +33,7 @@ That is found here: [SQLToy Wiki](https://github.com/weinberg/SQLToy/wiki).
 
 If you are a Javascript programmer I suspect you will find that it is much simpler than you think. Give it a look!
 
-### But how do I _use_ it?
+## But how do I _use_ it?
 
 All operations in this database (and _conceptually_ in a real database also) take tables as input and produce tables as output. So you take a table and provide it to an operation, getting a new table back in return.  To apply multiple operations, supply that new table to the next operation.
 
@@ -71,8 +71,13 @@ result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count'])
 table(result);
 ```
 
-# References
+## References
 
 A good primer on SQL operation execution order:
 
 https://blog.jooq.org/a-beginners-guide-to-the-true-order-of-sql-operations/
+
+For a good discussion of set theory as it applies to the relational model:
+
+https://medium.com/basecs/set-theory-the-method-to-database-madness-5ec4b4f05d79 .
+
