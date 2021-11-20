@@ -2,32 +2,32 @@
 
 An in-memory SQL database written in Javascript for the purpose of explaining the relational model and SQL order of operations.
 
-### Cool a new database! I will deploy this to production!
+SQLToy is under 500 lines of code and has zero dependencies.
+
+SQLToy supports the following operations:
+
+    - SELECT
+    - FROM
+    - CROSS JOIN
+    - INNER JOIN
+    - LEFT JOIN
+    - RIGHT JOIN
+    - WHERE
+    - GROUP BY
+    - Aggregate functions: ARRAY_AGG, MAX, MIN, COUNT
+    - DISTINCT
+    - ORDER BY
+    - OFFSET
+    - LIMIT
+    - CREATE TABLE
+    - INSERT INTO
+    - UPDATE
+
+### A new database! I shall deploy it to production!
 
 An excellent idea! Especially if you like downtime!
 
-Don't use this for anything except learning about SQL.
-
-### What operations are supported?
-
-Currently:
-
-- SELECT
-- FROM
-- CROSS JOIN
-- INNER JOIN
-- LEFT JOIN
-- RIGHT JOIN
-- WHERE
-- GROUP BY
-- Aggregate functions: ARRAY_AGG, MAX, MIN, COUNT
-- DISTINCT
-- ORDER BY
-- OFFSET
-- LIMIT
-- CREATE TABLE
-- INSERT INTO
-- UPDATE
+No, just use SQLToy to learn about SQL.
 
 ### How do I use this database?
 
