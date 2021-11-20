@@ -23,18 +23,19 @@ SQLToy is under 500 lines of code and has zero dependencies. It supports the fol
 
 ### A new database! I shall deploy it to production!
 
-An excellent idea! Especially if you like downtime!
+An excellent idea, especially if you like downtime! No, just use SQLToy to learn about SQL.
 
-No, just use SQLToy to learn about SQL.
+### Read the Wiki
 
-### How do I use this database?
+The core of this repo is not really the code but the walkthrough which describes what you need to understand it.
 
-The best introduction to this code is via the wiki. If you are a Javascript programmer I suspect you will find that it is much simpler than you think. Give it a look!
+That is found here: [SQLToy Wiki](https://github.com/weinberg/SQLToy/wiki).
+
+If you are a Javascript programmer I suspect you will find that it is much simpler than you think. Give it a look!
 
 ### But how do I _use_ it?
 
-All operations in this database (and _conceptually_ in a real database also) take tables as input and produce tables as output.
-So you take a table and provide it to an operation, getting a new table back in return.  To apply multiple operations, supply that new table to the next operation.
+All operations in this database (and _conceptually_ in a real database also) take tables as input and produce tables as output. So you take a table and provide it to an operation, getting a new table back in return.  To apply multiple operations, supply that new table to the next operation.
 
 For example, the query:
 
