@@ -1,4 +1,4 @@
-# SQLToy
+# What is SQLToy?
 
 An in-memory SQL database written in Javascript for the purpose of explaining the relational model and SQL order of operations.
 
@@ -21,9 +21,11 @@ SQLToy is under 500 lines of code and has zero dependencies. It supports the fol
     - INSERT INTO
     - UPDATE
 
+SQLToy does not support persistence, transactions or even parsing queries. You must call the query operations in code in the proper order. See below.
+
 ## A new database! I shall deploy it to production!
 
-An excellent idea, especially if you like downtime! No, just use SQLToy to learn about SQL.
+This is an excellent idea, especially if you like downtime! No, just use SQLToy to learn about SQL.
 
 ## Read the Wiki
 
@@ -35,9 +37,13 @@ If you are a Javascript programmer I suspect you will find that it is much simpl
 
 ## But how do I _use_ it?
 
-All operations in this database (and _conceptually_ in a real database also) take tables as input and produce tables as output. So you take a table and provide it to an operation, getting a new table back in return.  To apply multiple operations, supply that new table to the next operation.
+There are two key concepts you should understand in order to use the database. These are described in detail in the wiki section [Key Concepts](https://github.com/weinberg/SQLToy/wiki/Two-Key-Concepts).
 
-For example, the query:
+First: The SQL order of operations. You must call the operations in the correct order. A "real" database will do this for you. In this database you must call the operations in the correct order yourself. 
+
+Next: "Tables in, tables out". All operations in this database (and _conceptually_ in a real database) take tables as input and produce tables as output. So you take a table and provide it to an operation, getting a new table back in return.  To apply multiple operations, supply that new table as an argument to the next operation.
+
+As an example, the following SQL query:
 
 ```SQL
 SELECT DISTINCT status, charity_group.name, COUNT(*) AS count FROM employee
@@ -47,7 +53,7 @@ SELECT DISTINCT status, charity_group.name, COUNT(*) AS count FROM employee
     GROUP BY status, charity_group.name
 ```
 
-Is done like this:
+Is done like this in SQLToy:
 
 ```javascript
 // First joins
@@ -70,6 +76,9 @@ result = SELECT(result, ['employee.status', 'charity_group.name','COUNT(charity_
 result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count'])
 table(result);
 ```
+
+The resulting table can be viewed with the `table()` helper and looks like this:
+
 
 ## References
 

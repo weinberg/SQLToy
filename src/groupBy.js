@@ -1,6 +1,7 @@
 /**
- * GROUP_BY creates an array for each column in the input table (which can be the result of a JOIN, WHERE)
- * and populates that array with the values for that column from rows where the group by keys are the same.
+ * GROUP_BY returns a new table with 1 row for each distinct set of values from the groupBys columns.
+ * On those rows it also creates a _groupedRows property which holds an array of copies of the rows
+ * which were grouped from the original table. This property is then used in the aggregate functions.
  */
 import {US} from "./util.js";
 
@@ -28,6 +29,7 @@ const GROUP_BY = (table, groupBys) => {
         }
 
     ]
+  }
   */
   const keyRows = {};
   for (const row of table.rows) {

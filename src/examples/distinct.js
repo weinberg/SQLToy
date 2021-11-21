@@ -2,38 +2,46 @@ import {table} from "../output.js";
 import {SELECT} from "../select.js";
 import {DISTINCT} from "../distinct.js";
 import {initJSDB} from "../index.js";
-import {setupDatabase} from "./sampleData.js";
 import {FROM} from "../from.js";
 import {JOIN} from "../join.js";
 import {WHERE} from "../where.js";
 import {GROUP_BY} from "../groupBy.js";
 import {COUNT} from "../aggregate.js";
 import {ORDER_BY} from "../orderBy.js";
+import {CREATE_TABLE} from "../createTable.js";
+import {INSERT_INTO} from "../insertInto.js";
 
 // demo distinct
 
 initJSDB();
-setupDatabase();
-let employee;
-let club;
-let employee_club;
-let result;
+CREATE_TABLE('book');
+INSERT_INTO('book', [
+  { id: 1, name: 'The C Programming Language', status: 'Checked Out' },
+  { id: 2, name: 'SQL Fundamentals', status: 'Checked Out' },
+  { id: 3, name: 'The Magic Garden Explained', status: 'Checked Out' },
+  { id: 4, name: 'The Art of Computer Programming', status: 'Available' },
+  { id: 5, name: 'Design Patterns', status: 'Available' },
+  { id: 6, name: 'Compilers, ', status: 'Missing' },
+]);
 
 // Distinct on status
-employee = FROM('employee');
-result = SELECT(employee, ['status']);
+const book = FROM('book');
+let result = SELECT(book, ['status']);
 result = DISTINCT(result, ['status']);
 table(result);
 
 // Output:
 /*
-┌────────────┐
-│   status   │
-├────────────┤
-│ 'inactive' │
-│  'active'  │
-└────────────┘
+┌───────────────┐
+│    status     │
+├───────────────┤
+│  Checked Out  │
+│   Available   │
+│    Missing    │
+└───────────────┘
 */
+
+// Distinct can work on multiple columns
 
 // This query joins on club and then does distinct on status and club.name
 // which leads to (active, Cat Lovers) and (inactive, Environmentalists) being condensed to a single row
