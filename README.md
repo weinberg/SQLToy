@@ -45,40 +45,57 @@ Next: "Tables in, tables out". All operations in this database (and _conceptuall
 
 As an example, the following SQL query:
 
+##### SQL
 ```SQL
 SELECT DISTINCT status, charity_group.name, COUNT(*) AS count FROM employee
-    JOIN employee_charity_group ON employee_charity_group.a = employee.id
-    JOIN charity_group ON charity_group.id = employee_charity_group.b
-    WHERE employee.salary > 150000
-    GROUP BY status, charity_group.name
+  JOIN employee_charity_group 
+    ON employee_charity_group.a = employee.id
+  JOIN charity_group
+    ON charity_group.id = employee_charity_group.b
+  WHERE employee.salary > 150000
+  GROUP BY status, charity_group.name
+  ORDER BY count DESC;
+
++----------+--------------------+---------+
+| status   | name               | count   |
+|----------+--------------------+---------|
+| active   | Cat Lovers         | 2       |
+| active   | Environmentalists  | 1       |
+| active   | Food for the Needy | 1       |
+| active   | House Builders     | 1       |
+| inactive | Education for Kids | 1       |
+| inactive | Environmentalists  | 1       |
++----------+--------------------+---------+
 ```
 
-Is done like this in SQLToy:
-
+##### SQLToy
 ```javascript
-// First joins
-let result = INNER_JOIN( employee, employee_charity_group,
-  (c) => c["employee_charity_group.A"] === c["employee.id"]
-);
-result = INNER_JOIN( result, charity_group,
-  (c) => c["employee_charity_group.B"] === c["charity_group.id"]
-);
-
-// then WHERE
+let result;
+result = JOIN(employee, employee_charity_group, (c) => c["employee_charity_group.A"] === c["employee.id"]);
+result = JOIN(result, charity_group, (c) => c["employee_charity_group.B"] === c["charity_group.id"] );
 result = WHERE(result, (row) => row['employee.salary'] > 150000);
-
-// then Group By and aggregate
 result = GROUP_BY(result, ['employee.status', 'charity_group.name']);
 result = COUNT(result, 'charity_group.name');
-
-// then SELECT
-result = SELECT(result, ['employee.status', 'charity_group.name','COUNT(charity_group.name)'],{'COUNT(charity_group.name)': 'count'})
+result = SELECT(result,['employee.status', 'charity_group.name','COUNT(charity_group.name)'],{'COUNT(charity_group.name)': 'count'})
 result = DISTINCT(result, ['employee.status', 'charity_group.name', 'count'])
+result = ORDER_BY(result, (a,b) => a.count < b.count ? 1 : -1);
 table(result);
 ```
 
 The resulting table can be viewed with the `table()` helper and looks like this:
 
+```
+┌─────────────────┬──────────────────────┬───────┐
+│ employee.status │  charity_group.name  │ count │
+├─────────────────┼──────────────────────┼───────┤
+│     active      │      Cat Lovers      │   2   │
+│     active      │  Environmentalists   │   1   │
+│     active      │  Food for the Needy  │   1   │
+│     active      │    House Builders    │   1   │
+│    inactive     │  Education for Kids  │   1   │
+│    inactive     │  Environmentalists   │   1   │
+└─────────────────┴──────────────────────┴───────┘
+```
 
 ## References
 
