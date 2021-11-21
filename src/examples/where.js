@@ -43,7 +43,6 @@ table(result);
 //  JOIN employee_club ON employee_club.a = employee.id
 //  JOIN club ON club.id = employee_club.b
 //  WHERE salary > 150000 AND club.name = 'Cat Lovers';
-// First do join via join table as above
 
 employee = FROM('employee');
 department = FROM('department');
