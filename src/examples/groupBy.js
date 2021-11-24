@@ -40,7 +40,7 @@ table(result)
 process.exit();
 */
 
-/**********************************************/
+/**********************************************
 
 console.log('SELECT department_id, role, COUNT(*), ARRAY_AGG(name) FROM employee GROUP BY department_id, role;');
 
@@ -64,8 +64,9 @@ result = SELECT(result, ['department_id','role','COUNT(*)','ARRAY_AGG(name)']);
 table(result)
 
 process.exit();
+*/
 
-/**********************************************/
+/**********************************************
 
 /*
 console.log('SELECT department_id, COUNT(*) FROM employee GROUP BY department_id');
@@ -89,6 +90,26 @@ table(result)
 
 process.exit();
 */
+
+/**********************************************/
+
+CREATE_TABLE('test_scores');
+INSERT_INTO('test_scores',[
+  {student_id:1,test_id:1,score:100},
+  {student_id:1,test_id:2,score:90},
+  {student_id:2,test_id:1,score:85},
+  {student_id:2,test_id:2,score:80},
+  {student_id:3,test_id:1,score:75},
+  {student_id:3,test_id:2,score:99},
+]);
+const testScores = FROM('test_scores');
+result = GROUP_BY(testScores, ['student_id']);
+result = ARRAY_AGG(result, 'score');
+console.log(JSON.stringify(result,null,2));
+result = SELECT(result, ['student_id','ARRAY_AGG(score)']);
+table(result)
+
+process.exit();
 
 /**********************************************/
 

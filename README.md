@@ -23,7 +23,7 @@ SQLToy does not support persistence, transactions or even parsing queries. See b
 
 The purpose of SQLToy is to teach SQL "from the inside out". In addition to learning _what_ the operators do, you will learn _how_ they do it which leads to a much deeper level of understanding.
 
-## Read [the Wiki](https://github.com/weinberg/SQLToy/wiki)
+## [Read the Wiki](https://github.com/weinberg/SQLToy/wiki)
 
 The heart of this repo is not the code itself but the walkthrough which describes what you need to understand it.
 
@@ -31,7 +31,7 @@ That is found here: [SQLToy Wiki](https://github.com/weinberg/SQLToy/wiki).
 
 If you are a Javascript programmer I suspect you will find it much simpler than you think. Give it a look!
 
-## OK I will read the Wiki. But how do I _use_ this database?
+## OK, I will read the Wiki. But how do I _use_ this database?
 
 There are two concepts you should understand in order to use the database. These are described in detail in the wiki section [Key Concepts](https://github.com/weinberg/SQLToy/wiki/Two-Key-Concepts).
 

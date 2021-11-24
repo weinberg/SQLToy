@@ -2,7 +2,7 @@
 
 const aggregateHelper = (table, column, aggName, aggFunc) => {
   for (const row of table.rows) {
-    const pick = row._groupedRows.map(gr => gr[column])
+    const pick = row._groupRows.map(gr => gr[column])
     row[`${aggName}(${column})`] = aggFunc(pick);
   }
   return table;
@@ -36,8 +36,7 @@ const MIN = (table, column) => {
 }
 
 // COUNT aggregate function
-// todo - only count rows where column is not null
-// this will break the count('*') hack so we might need to special case that
+// todo - only count rows where column is not null. this will break the count('*') hack so we might need to special case that
 const COUNT = (table, column) => {
   return aggregateHelper(table, column, 'COUNT', values => values.length);
 }
