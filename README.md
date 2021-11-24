@@ -1,4 +1,4 @@
-# What is SQLToy?
+# What is SQLToy (AKA JSDB)?
 
 SQLToy is an in-memory SQL database written in Javascript. It is under 500 lines of code and has zero dependencies. It supports the following SQL operations:
 

@@ -36,6 +36,8 @@ const MIN = (table, column) => {
 }
 
 // COUNT aggregate function
+// todo - only count rows where column is not null
+// this will break the count('*') hack so we might need to special case that
 const COUNT = (table, column) => {
   return aggregateHelper(table, column, 'COUNT', values => values.length);
 }

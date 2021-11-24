@@ -4,11 +4,91 @@ import {table} from "../output.js";
 import {setupDatabase, setupSimpleDatabase} from "./sampleData.js";
 import {initJSDB} from "../index.js";
 import {FROM} from "../from.js";
+import {DROP_TABLE} from "../dropTable.js";
+import {CREATE_TABLE} from "../createTable.js";
+import {INSERT_INTO} from "../insertInto.js";
+import {SELECT} from "../select.js";
 
 initJSDB();
 setupSimpleDatabase();
 let employee;
 let result;
+
+/**********************************************/
+
+/*
+console.log('SELECT department_id, ARRAY_AGG(role) FROM employee GROUP BY department_id');
+
+DROP_TABLE('employee');
+CREATE_TABLE('employee');
+INSERT_INTO('employee',[
+  {id:1,name:'Josh',department_id:1,role:'Manager'},
+  {id:2,name:'Ruth',department_id:2,role:'Worker'},
+  {id:3,name:'Jake',department_id:1,role:'Worker'},
+  {id:4,name:'John',department_id:2,role:'Worker'},
+  {id:5,name:'Alice',department_id:2,role:'Manager'},
+  {id:6,name:'Dan',department_id:1,role:'Manager'},
+  {id:7,name:'Janet',department_id:1,role:'Manager'},
+]);
+employee = FROM('employee');
+result = GROUP_BY(employee, ['department_id']);
+console.log(JSON.stringify(result,null,2));
+result = ARRAY_AGG(result, 'name');
+result = SELECT(result, ['department_id','ARRAY_AGG(name)']);
+table(result)
+
+process.exit();
+*/
+
+/**********************************************/
+
+console.log('SELECT department_id, role, COUNT(*), ARRAY_AGG(name) FROM employee GROUP BY department_id, role;');
+
+DROP_TABLE('employee');
+CREATE_TABLE('employee');
+INSERT_INTO('employee',[
+  {id:1,name:'Josh',department_id:1,role:'Manager'},
+  {id:2,name:'Ruth',department_id:2,role:'Worker'},
+  {id:3,name:'Jake',department_id:1,role:'Worker'},
+  {id:4,name:'John',department_id:2,role:'Worker'},
+  {id:5,name:'Alice',department_id:2,role:'Manager'},
+  {id:6,name:'Dan',department_id:1,role:'Manager'},
+  {id:7,name:'Janet',department_id:1,role:'Manager'},
+]);
+employee = FROM('employee');
+result = GROUP_BY(employee, ['department_id','role']);
+console.log(JSON.stringify(result,null,2));
+result = COUNT(result, '*');
+result = ARRAY_AGG(result, 'name');
+result = SELECT(result, ['department_id','role','COUNT(*)','ARRAY_AGG(name)']);
+table(result)
+
+process.exit();
+
+/**********************************************/
+
+/*
+console.log('SELECT department_id, COUNT(*) FROM employee GROUP BY department_id');
+
+DROP_TABLE('employee');
+CREATE_TABLE('employee');
+INSERT_INTO('employee',[
+  {id:1,name:'Josh',department_id:1,role:'Manager'},
+  {id:2,name:'Ruth',department_id:2,role:'Worker'},
+  {id:3,name:'Jake',department_id:1,role:'Worker'},
+  {id:4,name:'John',department_id:2,role:'Worker'},
+  {id:5,name:'Alice',department_id:2,role:'Manager'},
+  {id:6,name:'Dan',department_id:1,role:'Manager'},
+  {id:7,name:'Janet',department_id:1,role:'Manager'},
+]);
+employee = FROM('employee');
+result = GROUP_BY(employee, ['department_id']);
+result = COUNT(result, '*');
+result = SELECT(result, ['department_id','COUNT(*)'], {'COUNT(*)': 'count'});
+table(result)
+
+process.exit();
+*/
 
 /**********************************************/
 
