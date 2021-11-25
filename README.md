@@ -109,5 +109,19 @@ For a good discussion of set theory as it applies to the relational model:
 
 https://medium.com/basecs/set-theory-the-method-to-database-madness-5ec4b4f05d79 .
 
+## Contributions
 
-Now [go read the Wiki](https://github.com/weinberg/SQLToy/wiki)! 😆
+I welcome contributions! The goals of this project are:
+
+- Teach SQL through a simple Javascript SQL database implementation
+- Simplicity and readability over features or compatibility with any standard
+- As few dependencies as possible
+
+You are welcome to submit a pull-request!
+
+## License
+
+The code in SQLToy is licensed under [The MIT License](https://github.com/weinberg/SQLToy/blob/main/LICENSE).
+
+The contents of the Wiki are licensed separately under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://github.com/weinberg/SQLToy/wiki/LICENSE).
+
