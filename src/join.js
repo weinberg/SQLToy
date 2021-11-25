@@ -32,6 +32,7 @@ const CROSS_JOIN = (a, b) => {
 
 /**
  * innerJoin takes two tables and a predicate. Result will be a table which includes the cross join of all rows which satisfy the predicate.
+ * todo: support aliases where we can pass in a value to use for columnName (in the cross join)
  */
 const INNER_JOIN = (a, b, pred) => {
   return {

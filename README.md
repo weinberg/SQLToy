@@ -19,9 +19,9 @@ SQLToy is an in-memory SQL database written in Javascript. It is under 500 lines
     - INSERT INTO
     - UPDATE
 
-SQLToy does not support persistence, transactions or even parsing queries. See below for usage.
+The purpose of SQLToy is to teach SQL. Instead of doing this via the SQL query language it is done by going through the implementation of the SQL operators. Once the reader understands the [Key Concepts](https://github.com/weinberg/SQLToy/wiki/Two-Key-Concepts) they will be able to reason about how a SQL query is processed and follow the walkthrough of the implementation on the [Wiki](https://github.com/weinberg/SQLToy/wiki). In addition to learning _what_ the operators do, you will learn _how_ they do it which leads to a much deeper level of understanding.
 
-The purpose of SQLToy is to teach SQL "from the inside out". In addition to learning _what_ the operators do, you will learn _how_ they do it which leads to a much deeper level of understanding.
+Note: SQLToy does not support persistence, transactions or even parsing queries. There are many ways you can break it. See below for usage.
 
 ## [Read the Wiki](https://github.com/weinberg/SQLToy/wiki)
 
