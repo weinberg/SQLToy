@@ -1,5 +1,7 @@
 # What is SQLToy (AKA JSDB)?
 
+I encourage you to [read the Wiki](https://github.com/weinberg/SQLToy/wiki)
+
 SQLToy is an in-memory SQL database written in Javascript. It is under 500 lines of code and has zero dependencies. It supports the following SQL operations:
 
     - SELECT
@@ -25,9 +27,9 @@ Note: SQLToy does not support persistence, transactions or even parsing queries.
 
 ## [Read the Wiki](https://github.com/weinberg/SQLToy/wiki)
 
-The heart of this repo is not the code itself but the walkthrough which describes what you need to understand it.
+The heart of this repo is not the code itself but the walkthrough which describes what you need to understand it:
 
-That is found here: [SQLToy Wiki](https://github.com/weinberg/SQLToy/wiki).
+This can be found here: [SQLToy Wiki](https://github.com/weinberg/SQLToy/wiki)
 
 If you are a Javascript programmer I suspect you will find it much simpler than you think. Give it a look!
 
