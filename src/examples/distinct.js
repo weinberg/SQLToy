@@ -14,6 +14,37 @@ import {INSERT_INTO} from "../insertInto.js";
 // demo distinct
 
 initJSDB();
+/*
++------+------------------+----------+
+| id   | city             | state    |
+|------+------------------+----------|
+| 1    | Denver           | Colorado |
+| 2    | Colorado Springs | Colorado |
+| 3    | South Park       | Colorado |
+| 4    | Corpus Christi   | Texas    |
+| 5    | Houston          | Texas    |
+| 6    | Denver           | Colorado |
+| 7    | Corpus Christi   | Texas    |
++------+------------------+----------+
+ */
+
+CREATE_TABLE('friends');
+INSERT_INTO('friends',[
+  {id:1,city:'Denver',state:'Colorado'},
+  {id:2,city:'Colorado Springs',state:'Colorado'},
+  {id:3,city:'South Park',state:'Colorado'},
+  {id:4,city:'Corpus Christi',state:'Texas'},
+  {id:5,city:'Houston',state:'Texas'},
+  {id:6,city:'Denver',state:'Colorado'},
+  {id:7,city:'Corpus Christi',state:'Texas'},
+]);
+
+const friends = FROM('friends');
+const result = DISTINCT(friends, ['city', 'state']);
+table(result);
+process.exit();
+
+/*
 CREATE_TABLE('book');
 INSERT_INTO('book', [
   { id: 1, name: 'The C Programming Language', status: 'Checked Out' },
@@ -29,6 +60,8 @@ const book = FROM('book');
 let result = SELECT(book, ['status']);
 result = DISTINCT(result, ['status']);
 table(result);
+
+ */
 
 // Output:
 /*
@@ -55,7 +88,7 @@ table(result);
 /*
 Result:
 ┌─────────────────┬──────────────────────┬───────┐
-│ employee.status │  club.name  │ count │
+│ employee.status │  club.name           │ count │
 ├─────────────────┼──────────────────────┼───────┤
 │     active      │      Cat Lovers      │   2   │
 │    inactive     │  Environmentalists   │   1   │
