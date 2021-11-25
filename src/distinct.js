@@ -8,23 +8,18 @@ import {US} from "./util.js";
 // Only the columns given will be returned in the resulting table.
 
 const DISTINCT = (table, columns) => {
-  const _colValuesByDistinct = {}
+  const _distinct = {}
   for (const row of table.rows) {
-    // make key out of all column values for this row separated by unit separator
+    // make composite key
     let key = columns.map(column => row[column]).join(US);
-    if (!_colValuesByDistinct[key]) {
-      _colValuesByDistinct[key] = {};
-    }
-    for (const col of columns) {
-      _colValuesByDistinct[key][col] = row[col]
-    }
+    _distinct[key] = row;
   }
 
   const newRows = [];
-  for (let key of Object.keys(_colValuesByDistinct)) {
+  for (let key in _distinct) {
     const newRow = {};
-    for (let i = 0; i < columns.length; i++) {
-      newRow[columns[i]] = _colValuesByDistinct[key][columns[i]]
+    for (let column of columns) {
+      newRow[column] = _distinct[key][column];
     }
     newRows.push(newRow);
   }
