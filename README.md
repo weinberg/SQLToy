@@ -1,6 +1,6 @@
 # What is SQLToy (AKA JSDB)?
 
-I encourage you to [read the Wiki](https://github.com/weinberg/SQLToy/wiki)
+I encourage you to [read the Wiki](https://github.com/weinberg/SQLToy/wiki)!
 
 SQLToy is an in-memory SQL database written in Javascript. It is under 500 lines of code and has zero dependencies. It supports the following SQL operations:
 
@@ -109,3 +109,5 @@ For a good discussion of set theory as it applies to the relational model:
 
 https://medium.com/basecs/set-theory-the-method-to-database-madness-5ec4b4f05d79 .
 
+
+Now [go read the Wiki](https://github.com/weinberg/SQLToy/wiki)! 😆
