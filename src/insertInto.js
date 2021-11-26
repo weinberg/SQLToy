@@ -8,9 +8,7 @@ function INSERT_INTO(tableName, r) {
     rows = [r];
   }
   const table = database.tables[tableName];
-  for (const row of rows) {
-    table.rows = [...table.rows, row];
-  }
+  table.rows = [...table.rows, ...rows];
 }
 
 export { INSERT_INTO }
