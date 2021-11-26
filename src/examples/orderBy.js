@@ -3,13 +3,13 @@ import {SELECT} from "../select.js";
 import {table} from "../output.js";
 import {ORDER_BY} from "../orderBy.js";
 import {FROM} from "../from.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {setupDatabase} from "./sampleData.js";
 import {INSERT_INTO} from "../insertInto.js";
 import {DROP_TABLE} from "../dropTable.js";
 import {CREATE_TABLE} from "../createTable.js";
 
-initJSDB();
+initSQLToy();
 setupDatabase();
 let employee;
 let result;

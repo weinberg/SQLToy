@@ -5,10 +5,6 @@ import { database } from './index.js';
  */
 
 function CREATE_TABLE(name) {
-  if (database.tables[name]) {
-    throw new Error('Table already exists');
-  }
-
   database.tables[name] = {
     name,
     rows: []

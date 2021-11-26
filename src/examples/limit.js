@@ -2,11 +2,11 @@ import {SELECT} from "../select.js";
 import {LIMIT} from "../limit.js";
 import {ORDER_BY} from "../orderBy.js";
 import {table} from "../output.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {setupDatabase} from "./sampleData.js";
 import {FROM} from "../from.js";
 
-initJSDB();
+initSQLToy();
 setupDatabase();
 let employee;
 let result;

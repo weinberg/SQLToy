@@ -2,7 +2,7 @@ import {CREATE_TABLE} from "../createTable.js";
 import {INSERT_INTO} from "../insertInto.js";
 import {table} from "../output.js";
 import {FROM} from "../from.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 
 /******************
  *
@@ -93,7 +93,7 @@ function setupDatabase() {
 }
 
 /*
-initJSDB();
+initSQLToy();
 setupDatabase();
 */
 

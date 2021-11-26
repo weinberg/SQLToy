@@ -4,12 +4,12 @@ import {ORDER_BY} from "../orderBy.js";
 import {OFFSET} from "../offset.js";
 import {LIMIT} from "../limit.js";
 import {setupDatabase} from "./sampleData.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {FROM} from "../from.js";
 
 // OFFSET and LIMIT used together paginate data
 
-initJSDB();
+initSQLToy();
 setupDatabase();
 let employee;
 let result;

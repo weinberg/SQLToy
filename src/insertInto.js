@@ -8,9 +8,6 @@ function INSERT_INTO(tableName, r) {
     rows = [r];
   }
   const table = database.tables[tableName];
-  if (!table) {
-    throw new Error('Table not found');
-  }
   for (const row of rows) {
     table.rows = [...table.rows, row];
   }

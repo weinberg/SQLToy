@@ -4,12 +4,12 @@ import {INNER_JOIN} from "../join.js";
 import {WHERE} from "../where.js";
 import {table} from "../output.js";
 import {setupDatabase} from "./sampleData.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {FROM} from "../from.js";
 import {CREATE_TABLE} from "../createTable.js";
 import {INSERT_INTO} from "../insertInto.js";
 
-initJSDB();
+initSQLToy();
 setupDatabase();
 let employee;
 let department;

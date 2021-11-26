@@ -1,9 +1,9 @@
 {
-  "name": "jsdb",
+  "name": "SQLToy",
   "version": "1.0.0",
-  "description": "SQL implemented in javascript",
+  "description": "SQL database implemented in Javascript",
   "main": "index.js",
-  "repository": "git@weinberg.github.com:weinberg/jsdb.git",
+  "repository": "git@weinberg.github.com:weinberg/SQLtoy.git",
   "author": "Joshua Weinberg",
   "license": "MIT",
   "private": false,

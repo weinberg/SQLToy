@@ -2,14 +2,14 @@ import {GROUP_BY} from "../groupBy.js";
 import {ARRAY_AGG, AVG, COUNT, MAX, MIN} from "../aggregate.js";
 import {table} from "../output.js";
 import {setupDatabase, setupSimpleDatabase} from "./sampleData.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {FROM} from "../from.js";
 import {DROP_TABLE} from "../dropTable.js";
 import {CREATE_TABLE} from "../createTable.js";
 import {INSERT_INTO} from "../insertInto.js";
 import {SELECT} from "../select.js";
 
-initJSDB();
+initSQLToy();
 setupSimpleDatabase();
 let employee;
 let result;

@@ -1,7 +1,7 @@
 import {table} from "../output.js";
 import {SELECT} from "../select.js";
 import {DISTINCT} from "../distinct.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {FROM} from "../from.js";
 import {JOIN} from "../join.js";
 import {WHERE} from "../where.js";
@@ -13,7 +13,7 @@ import {INSERT_INTO} from "../insertInto.js";
 
 // demo distinct
 
-initJSDB();
+initSQLToy();
 /*
 +------+------------------+----------+
 | id   | city             | state    |

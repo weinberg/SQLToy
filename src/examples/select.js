@@ -1,13 +1,13 @@
 import {SELECT} from "../select.js";
 import {table} from "../output.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {FROM} from "../from.js";
 import {CREATE_TABLE} from "../createTable.js";
 import {INSERT_INTO} from "../insertInto.js";
 import {JOIN} from "../join.js";
 
 
-initJSDB();
+initSQLToy();
 
 /*****************************************************/
 /*

@@ -2,11 +2,11 @@ import {GROUP_BY} from "../groupBy.js";
 import {COUNT} from "../aggregate.js";
 import {table} from "../output.js";
 import {HAVING} from "../having.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {setupDatabase} from "./sampleData.js";
 import {FROM} from "../from.js";
 
-initJSDB();
+initSQLToy();
 setupDatabase();
 let employee;
 let result;

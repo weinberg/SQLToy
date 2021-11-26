@@ -2,14 +2,14 @@ import {SELECT} from "../select.js";
 import {ORDER_BY} from "../orderBy.js";
 import {OFFSET} from "../offset.js";
 import {table} from "../output.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {setupDatabase} from "./sampleData.js";
 import {FROM} from "../from.js";
 import {CREATE_TABLE} from "../createTable.js";
 import {INSERT_INTO} from "../insertInto.js";
 import {LIMIT} from "../limit.js";
 
-initJSDB();
+initSQLToy();
 setupDatabase();
 let employee;
 

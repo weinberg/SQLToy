@@ -2,14 +2,14 @@ import {table} from "../output.js";
 import {CROSS_JOIN, INNER_JOIN, LEFT_JOIN, RIGHT_JOIN} from "../join.js";
 import {FROM} from "../from.js";
 import {setupDatabase} from "./sampleData.js";
-import {initJSDB} from "../index.js";
+import {initSQLToy} from "../index.js";
 import {CREATE_TABLE} from "../createTable.js";
 import {INSERT_INTO} from "../insertInto.js";
 import {SELECT} from "../select.js";
 import {ORDER_BY} from "../orderBy.js";
 
 // Demo
-initJSDB();
+initSQLToy();
 setupDatabase();
 let employee;
 let department;

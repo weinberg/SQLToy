@@ -1,14 +1,14 @@
 /**
- * JSDB
+ * SQLToy
  */
 
 let database = {}
 
-function initJSDB() {
+function initSQLToy() {
   database = {
     tables: {}
   }
 
 }
 
-export { initJSDB, database }
+export { initSQLToy, database }
