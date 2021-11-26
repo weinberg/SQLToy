@@ -1,4 +1,4 @@
-# What is SQLToy (AKA JSDB)?
+# What is SQLToy?
 
 I encourage you to [read the Wiki](https://github.com/weinberg/SQLToy/wiki)!
 
