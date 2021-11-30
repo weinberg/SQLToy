@@ -20,7 +20,7 @@ const CROSS_JOIN = (a, b) => {
         row[columnName] = y[k];
       }
 
-      // Store an array of the two columns used to make up this new row.
+      // Store an array of the two rows used to make up this new row.
       // This is used in LEFT_JOIN and RIGHT_JOIN.
       row._tableRows = [x, y];
 
