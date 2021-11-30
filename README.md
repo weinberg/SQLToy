@@ -21,7 +21,7 @@ SQLToy is an in-memory SQL database written in Javascript. It is under 500 lines
     - INSERT INTO
     - UPDATE
 
-SQLToy is for learning SQL. Instead of doing this from the "outside-in" by learning the query language you do it "inside-out" by going through the implementation of the most common SQL operators. Instead of just learning what the operators do, you also learn how they do it which (hopefully!) should lead to a much deeper level of understanding.
+SQLToy is for learning SQL. Instead of doing this from the "outside-in" by learning the query language you do it "inside-out" by going through the implementation of the most common SQL operators. Instead of just learning what the operators do, you also learn how they do it which (hopefully!) gives you a much deeper level of understanding.
 
 A detailed [Wiki](https://github.com/weinberg/SQLToy/wiki) walks through the code. Please take a look!
 
