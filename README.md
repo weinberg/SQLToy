@@ -21,11 +21,11 @@ SQLToy is an in-memory SQL database written in Javascript. It is under 500 lines
     - INSERT INTO
     - UPDATE
 
-The purpose of SQLToy is to teach SQL. Instead of doing this from the "outside-in" by teaching the query language it is done "inside-out" by going through the implementation of the most common SQL operators. Once you understand the [Key Concepts](https://github.com/weinberg/SQLToy/wiki/Two-Key-Concepts) you will be able to reason about how a SQL query is processed and follow the walkthrough of the implementation on the [Wiki](https://github.com/weinberg/SQLToy/wiki). Instead of just learning what the operators _do_, you will also learn _how_ they do it which (hopefully!) should lead to a much deeper level of understanding.
+SQLToy is for learning SQL. Instead of doing this from the "outside-in" by learning the query language you do it "inside-out" by going through the implementation of the most common SQL operators. Instead of just learning what the operators do, you also learn how they do it which (hopefully!) gives you a much deeper level of understanding.
 
-To get the most out of this repository you should have familiarity with Javascript and some ES6 syntax. If you are proficient in another programming language like Python or Java you should still be able to figure things out.
+A detailed [Wiki](https://github.com/weinberg/SQLToy/wiki) walks through the code. Please take a look!
 
-This is not a primer on how to write a production grade database. No attempts are made at performance optimization or compatibility with any standard. SQLToy does not support persistence, transactions or even parsing queries. There are many ways you can break it. See below for usage.
+To get the most out of this repository you should have familiarity with Javascript and some ES6 syntax. If you are proficient in another programming language like Python or Java you should still be able to figure things out. This is not a primer on how to write a production grade database. No attempts are made at performance optimization or compatibility with any standard. SQLToy does not support persistence, transactions or even parsing queries. There are many ways you can break it. See below for usage.
 
 ## [Read the Wiki](https://github.com/weinberg/SQLToy/wiki)
 
