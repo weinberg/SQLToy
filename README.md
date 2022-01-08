@@ -1,7 +1,5 @@
 # What is SQLToy?
 
-I encourage you to [read the Wiki](https://github.com/weinberg/SQLToy/wiki)!
-
 SQLToy is an in-memory SQL database written in Javascript. It is under 500 lines of code and has zero dependencies. It supports the following SQL operations:
 
     - SELECT
