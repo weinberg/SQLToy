@@ -109,6 +109,10 @@ For a good discussion of set theory as it applies to the relational model:
 
 https://medium.com/basecs/set-theory-the-method-to-database-madness-5ec4b4f05d79 .
 
+Learn SQL and it's operations in detail:
+
+https://www.scaler.com/topics/sql/
+
 ## Contributions
 
 I welcome contributions! The goals of this project are:
