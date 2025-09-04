@@ -88,14 +88,14 @@ The resulting table can be viewed with the `table()` helper and looks like this:
 
 ```
 ┌─────────────────┬──────────────────────┬───────┐
-│ employee.status │  club.name           │ count │
+│ employee.status │  club.name          │ count │
 ├─────────────────┼──────────────────────┼───────┤
-│     active      │      Cat Lovers      │   2   │
-│     active      │  Environmentalists   │   1   │
-│     active      │  Food for the Needy  │   1   │
-│     active      │    House Builders    │   1   │
-│    inactive     │  Education for Kids  │   1   │
-│    inactive     │  Environmentalists   │   1   │
+│     active      │      Cat Lovers     │   2   │
+│     active      │     Rotary Club     │   1   │
+│     active      │       BBQ Crew      │   1   │
+│     active      │    House Builders   │   1   │
+│    inactive     │  Education for Kids │   1   │
+│    inactive     │  Environmentalists  │   1   │
 └─────────────────┴──────────────────────┴───────┘
 ```
 
